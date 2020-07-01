@@ -1,0 +1,9 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <?php
+    mysql_connect()
+?>
+    </body>
+</html>
