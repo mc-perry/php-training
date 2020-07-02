@@ -22,10 +22,29 @@ class CheckUserToken
      */
     public function handle($request, Closure $next)
     {
+        // There should be both id and token with routes associated with this middleware
         if (!$request->id || !$request->token) {
+            // Reject request if either is not supplied
             return response()->json(['data' => ['idとtoken(必須)フィールドに入力してください。']], 200);
         }
-        $tokenResponse = $this->userService->confirmUserToken($request->id, $request->token);
+        // Variables for the id and token
+        $userId = null;
+        $userToken = null;
+        // If the id value is cached, opt to use it
+        if ($request->session()->has('id')) {
+            $userId = $request->session()->get('id');
+        } else {
+            $userId = $request->id;
+            $request->session()->put('id', $userId);
+        }
+        // If the token value is cached, opt to use it
+        if ($request->session()->has('token')) {
+            $userToken = $request->session()->get('token');
+            $request->session()->put('token', $userToken);
+        } else {
+            $userToken = $request->token;
+        }
+        $tokenResponse = $this->userService->confirmUserToken($userId, $userToken);
         if ($tokenResponse['code']) {
             return response()->json($tokenResponse, 200);
         }
