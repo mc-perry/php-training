@@ -32,6 +32,20 @@ class UserRepository
         return UserModel::query()->where('id', $UserId)->pluck('access_token')[0];
     }
 
+
+    /**
+     * Get user object with specified id and token
+     *
+     * @param int $UserId
+     * @param string $Token
+     * @return User
+     */
+    public function getUserByUserIDAndToken(int $UserId, string $Token)
+    {
+        return UserModel::query()->where('id', $UserId)->where('access_token', $Token)->first();
+    }
+
+
     /**
      * データを挿入する
      *

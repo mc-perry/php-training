@@ -41,7 +41,7 @@ class UserService
     }
 
     /**
-     * Insert user data
+     * Get token by user id
      *
      * @param int $user_id
      * @return string
@@ -51,6 +51,19 @@ class UserService
         $userToken = $this->userRepository->getTokenByUserID($user_id);
         return $userToken;
     }
+
+    /**
+     * Get token by user id
+     *
+     * @param int $user_id
+     * @return string
+     */
+    public function getUserByUserIDAndToken(int $user_id, string $token)
+    {
+        $userObject = $this->userRepository->getUserByUserIDAndToken($user_id, $token);
+        return $userObject;
+    }
+
 
     /**
      * Insert user data
