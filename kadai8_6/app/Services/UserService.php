@@ -160,15 +160,18 @@ class UserService
     }
 
     /**
-     * Confirm the passed token is the one initially assigned to the user
+     * Check if a user exists with the given id
      *
      * @param int $UserId
      * @return bool
      */
     public function userExistsWithId(int $UserId)
     {
-        $levelToSet = $this->masterDataRepository->userExistsWithId($UserId)[0];
-        $this->userRepository->setLevelForUserById($UserId, $levelToSet);
-        return $levelToSet;
+        $returnObject = $this->getUserByUserID($UserId)->first();
+        if ($returnObject) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

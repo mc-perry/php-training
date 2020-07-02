@@ -22,6 +22,9 @@ class CheckUserToken
      */
     public function handle($request, Closure $next)
     {
+        // The session can be flushed for testing this way
+        // $request->session()->flush();
+
         // There should be both id and token with routes associated with this middleware
         if (!$request->id || !$request->token) {
             // Reject request if either is not supplied
@@ -30,22 +33,53 @@ class CheckUserToken
         // Variables for the id and token
         $userId = null;
         $userToken = null;
+
         // If the id value is cached, opt to use it
         if ($request->session()->has('id')) {
-            // This line confirms that the caching by session is working
-            // var_dump($request->session()->get('token'));
-            $userId = $request->session()->get('id');
+            $idToCheck = $request->session()->get('id');
+            // Check if a stored session id is set first
+            if ($this->userService->userExistsWithId($idToCheck)) {
+                $userId = $idToCheck;
+            } else {
+                // If it's not correct, then set the user-sent id
+                $idToCheck = $request->id;
+                if ($this->userService->userExistsWithId($idToCheck)) {
+                    $userId = $idToCheck;
+                    $request->session()->put('id', $userId);
+                } else {
+                    // Neither the cached id or the sent id were valid
+                    return response()->json(['data' => ['有効idを入力してください。']], 200);
+                }
+            }
         } else {
+            // If the id wasn't in the session, use the passed id
             $userId = $request->id;
             $request->session()->put('id', $userId);
         }
+
         // If the token value is cached, opt to use it
         if ($request->session()->has('token')) {
-            $userToken = $request->session()->get('token');
+            $tokenToCheck = $request->session()->get('token');
+            // Check if a stored session token is set first
+            if ($this->userService->confirmUserToken($userId, $tokenToCheck)) {
+                $userToken = $tokenToCheck;
+            } else {
+                // If it's not correct, then set the user-sent token
+                $tokenToCheck = $request->token;
+                if ($this->userService->confirmUserToken($userId, $tokenToCheck)) {
+                    $userToken = $tokenToCheck;
+                    $request->session()->put('token', $userToken);
+                } else {
+                    // Neither the cached token or the sent token were valtoken
+                    return response()->json(['data' => ['有効tokenを入力してください。']], 200);
+                }
+            }
         } else {
+            // If the token wasn't in the session, use the passed token
             $userToken = $request->token;
             $request->session()->put('token', $userToken);
         }
+
         $tokenResponse = $this->userService->confirmUserToken($userId, $userToken);
         if ($tokenResponse['code']) {
             return response()->json($tokenResponse, 200);
