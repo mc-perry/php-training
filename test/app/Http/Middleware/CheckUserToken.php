@@ -30,6 +30,7 @@ class CheckUserToken
             // Reject request if either is not supplied
             return response()->json(['data' => ['idとtoken(必須)フィールドに入力してください。']], 200);
         }
+
         // Variables for the id and token
         $userId = null;
         $userToken = null;
@@ -57,16 +58,21 @@ class CheckUserToken
             $request->session()->put('id', $userId);
         }
 
+        // Get the correct token
+        $correctToken = $this->userService->getTokenByUserID($userId);
+        var_dump($correctToken);
+
         // If the token value is cached, opt to use it
         if ($request->session()->has('token')) {
             $tokenToCheck = $request->session()->get('token');
             // Check if a stored session token is correct first
-            if ($this->userService->checkForCorrectToken($userId, $tokenToCheck)) {
-                $userToken = $tokenToCheck;
+            if ($tokenToCheck == $correctToken) {
+                // The cached token was correct; allow the request
+                return $next($request);
             } else {
                 // If it's not correct, then set the user-sent token
                 $tokenToCheck = $request->token;
-                if ($this->userService->checkForCorrectToken($userId, $tokenToCheck)) {
+                if ($tokenToCheck == $correctToken) {
                     $userToken = $tokenToCheck;
                     $request->session()->put('token', $userToken);
                 } else {
@@ -75,15 +81,18 @@ class CheckUserToken
                 }
             }
         } else {
-            // If the token wasn't in the session, use the passed token
+            // If the token wasn't in the session, check the token
             $userToken = $request->token;
+            $tokenResponse = $this->userService->confirmUserToken($userId, $userToken);
+            if ($tokenResponse['code']) {
+                return response()->json($tokenResponse, 200);
+            }
+            // If there is no error, the token is correct so store it in the session
             $request->session()->put('token', $userToken);
+            // Allow the request
+            return $next($request);
         }
 
-        $tokenResponse = $this->userService->confirmUserToken($userId, $userToken);
-        if ($tokenResponse['code']) {
-            return response()->json($tokenResponse, 200);
-        }
         return $next($request);
     }
 }

@@ -22,6 +22,17 @@ class UserRepository
     }
 
     /**
+     * ユーザーIDを指定してデータを取得する
+     *
+     * @param int $UserId
+     * @return User
+     */
+    public function getTokenByUserId(int $UserId)
+    {
+        return UserModel::query()->where('id', $UserId)->first()->pluck('access_token')[0];
+    }
+
+    /**
      * データを挿入する
      *
      * @param array $params
@@ -34,7 +45,7 @@ class UserRepository
     }
 
     /**
-     * データを挿入する
+     * Assign a token to a user
      *
      * @param array $params
      * @return User
