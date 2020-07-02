@@ -81,7 +81,7 @@ class UserService
      *
      * @param int $UserId
      * @param string $TokenToCheck
-     * @return string
+     * @return object
      */
     public function confirmUserToken(int $UserId, string $TokenToCheck)
     {

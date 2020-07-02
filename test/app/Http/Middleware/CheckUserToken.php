@@ -60,13 +60,13 @@ class CheckUserToken
         // If the token value is cached, opt to use it
         if ($request->session()->has('token')) {
             $tokenToCheck = $request->session()->get('token');
-            // Check if a stored session token is set first
-            if ($this->userService->confirmUserToken($userId, $tokenToCheck)) {
+            // Check if a stored session token is correct first
+            if ($this->userService->checkForCorrectToken($userId, $tokenToCheck)) {
                 $userToken = $tokenToCheck;
             } else {
                 // If it's not correct, then set the user-sent token
                 $tokenToCheck = $request->token;
-                if ($this->userService->confirmUserToken($userId, $tokenToCheck)) {
+                if ($this->userService->checkForCorrectToken($userId, $tokenToCheck)) {
                     $userToken = $tokenToCheck;
                     $request->session()->put('token', $userToken);
                 } else {

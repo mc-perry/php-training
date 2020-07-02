@@ -82,6 +82,29 @@ class UserService
      *
      * @param int $UserId
      * @param string $TokenToCheck
+     * @return bool
+     */
+    public function checkForCorrectToken(int $UserId, string $TokenToCheck)
+    {
+        $userObject = $this->userRepository->getUserByUserID($UserId);
+        if ($userObject) {
+            $userToken = $userObject['access_token'];
+        } else {
+            return false;
+        }
+        if ($TokenToCheck != $userToken) {
+            return false;
+        }
+        // If no errors are thrown the token is correct
+        return true;
+    }
+
+
+    /**
+     * Confirm the passed token is the one initially assigned to the user
+     *
+     * @param int $UserId
+     * @param string $TokenToCheck
      * @return string
      */
     public function confirmUserToken(int $UserId, string $TokenToCheck)
