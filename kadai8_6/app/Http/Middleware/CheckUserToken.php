@@ -36,11 +36,12 @@ class CheckUserToken
         $userId = null;
         $userToken = null;
 
+        // Variables for the sent data
+        $idToCheck = intval($request->id);
+        $tokenToCheck = $request->token;
+
         // If the id/token values are cached, use them
         if (Session::has('id') && Session::has('access_token')) {
-            $idToCheck = intval($request->id);
-            $tokenToCheck = $request->token;
-
             $sessionId = Session::get('id');
             $sessionToken = Session::get('access_token');
             // Check if the request and session id match
@@ -59,8 +60,6 @@ class CheckUserToken
             }
         } else {
             // If the id wasn't in the session, check the id (as an int)
-            $idToCheck = intval($request->id);
-            $tokenToCheck = $request->token;
             // Get the correct id
             $userObject = $this->userService->getUserByUserIDAndToken($idToCheck, $tokenToCheck);
 

@@ -24,7 +24,7 @@ class CheckUserToken
     public function handle($request, Closure $next)
     {
         // The session can be flushed for testing this way
-        Session::flush();
+        // Session::flush();
 
         // There should be both id and token with routes associated with this middleware
         if (!$request->id || !$request->token) {
@@ -36,11 +36,13 @@ class CheckUserToken
         $userId = null;
         $userToken = null;
 
+        // Variables for the sent data
+        $idToCheck = intval($request->id);
+        $tokenToCheck = $request->token;
+
         // If the id/token values are cached, use them
         if (Session::has('id') && Session::has('access_token')) {
-            $idToCheck = intval($request->id);
-            $tokenToCheck = $request->token;
-
+            var_dump(Session::all());
             $sessionId = Session::get('id');
             $sessionToken = Session::get('access_token');
             // Check if the request and session id match
@@ -59,8 +61,6 @@ class CheckUserToken
             }
         } else {
             // If the id wasn't in the session, check the id (as an int)
-            $idToCheck = intval($request->id);
-            $tokenToCheck = $request->token;
             // Get the correct id
             $userObject = $this->userService->getUserByUserIDAndToken($idToCheck, $tokenToCheck);
 
