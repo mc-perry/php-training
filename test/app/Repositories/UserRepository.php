@@ -29,7 +29,7 @@ class UserRepository
      */
     public function getTokenByUserId(int $UserId)
     {
-        return UserModel::query()->where('id', $UserId)->first()->pluck('access_token')[0];
+        return UserModel::query()->where('id', $UserId)->pluck('access_token')[0];
     }
 
     /**
