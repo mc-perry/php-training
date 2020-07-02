@@ -23,7 +23,7 @@ class CheckUserToken
     public function handle($request, Closure $next)
     {
         // The session can be flushed for testing this way
-        $request->session()->flush();
+        // $request->session()->flush();
 
         // There should be both id and token with routes associated with this middleware
         if (!$request->id || !$request->token) {
@@ -37,7 +37,15 @@ class CheckUserToken
 
         // If the id value is cached, use it
         if ($request->session()->has('id')) {
-            $userId = $request->session()->get('id');
+            $idToCheck = intval($request->id);
+            $sessionId = $request->session()->get('id');
+            // Check if the request and session id match
+            if ($sessionId != $idToCheck) {
+                // If they don't, return an error
+                return response()->json(['data' => ['他のユーザーの情報にアクセスしようとしています。']], 200);
+            } else {
+                $userId = $idToCheck;
+            }
         } else {
             // If the id wasn't in the session, check the id (as an int)
             $idToCheck = intval($request->id);
@@ -51,10 +59,18 @@ class CheckUserToken
             // If there is no error, the id is correct so store it in the session
             $request->session()->put('id', $userId);
         }
-
+        // var_dump($request->session()->all());
         // If the token value is cached, use it
-        if ($request->session()->has('token')) {
-            $userToken = $request->session()->get('token');
+        if ($request->session()->has('access_token')) {
+            $tokenToCheck = intval($request->token);
+            $sessionToken = $request->session()->get('access_token');
+            // Check if the request and session token match
+            if ($tokenToCheck != $sessionToken) {
+                // If they don't, return an error
+                return response()->json(['data' => ['トークンがセッションに保存されているものと一致しません。']], 200);
+            } else {
+                $userId = $idToCheck;
+            }
         } else {
             // If the token wasn't in the session, check the token
             $tokenToCheck = $request->token;
@@ -62,16 +78,16 @@ class CheckUserToken
             $correctToken = $this->userService->getTokenByUserID($userId);
             // The token is null by default, so reject in this case
             if (!$correctToken) {
-                return response()->json(['data' => ['有効tokenを入力してください。']], 200);
+                return response()->json(['data' => ['このユーザーのトークンはありません。']], 200);
             }
 
             if ($tokenToCheck == $correctToken) {
-                return $next($request);
+                $userToken = $tokenToCheck;
             } else {
                 return response()->json(['data' => ['有効tokenを入力してください。']], 200);
             }
             // If there is no error, the token is correct so store it in the session
-            $request->session()->put('token', $userToken);
+            $request->session()->put('access_token', $userToken);
         }
         // If no previous JSON response was returned, allow the request
         return $next($request);
