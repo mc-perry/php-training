@@ -18,7 +18,7 @@ class RankController extends Controller
             $rank = (Redis::zCount('ranking', $score, '+inf'));
             array_push($ranking, [
                 'ランキング' => $rank.'位',
-                'nickname' => $user,
+                'ニックネーム' => $user,
                 'スコア' => $score,
             ]);
         }
