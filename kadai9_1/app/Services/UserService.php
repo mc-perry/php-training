@@ -11,6 +11,7 @@ use App\Repositories\MasterDataRepository;
 use App\Repositories\MaintenanceRepository;
 use Illuminate\Support\Facades\DB;
 use App\Facades\Error;
+use Illuminate\Support\Facades\Redis;
 
 class UserService
 {
@@ -32,12 +33,11 @@ class UserService
      * Insert user data
      *
      * @param int $user_id
-     * @return array
+     * @return object
      */
     public function getUserByUserID(int $user_id)
     {
-        $inserted_data = $this->userRepository->getUserByUserID($user_id);
-        return $inserted_data;
+        return $this->userRepository->getUserByUserID($user_id);
     }
 
     /**
@@ -48,8 +48,7 @@ class UserService
      */
     public function getTokenByUserID(int $user_id)
     {
-        $userToken = $this->userRepository->getTokenByUserID($user_id);
-        return $userToken;
+        return $this->userRepository->getTokenByUserID($user_id);
     }
 
     /**
@@ -60,8 +59,7 @@ class UserService
      */
     public function getUserByUserIDAndToken(int $user_id, string $token)
     {
-        $userObject = $this->userRepository->getUserByUserIDAndToken($user_id, $token);
-        return $userObject;
+        return $this->userRepository->getUserByUserIDAndToken($user_id, $token);
     }
 
 
@@ -156,7 +154,7 @@ class UserService
      *
      * @param int $UserId
      * @param int $ExperiencePoints
-     * @return Array $userObject
+     * @return object $userObject
      */
     public function incrementExperienceAndUpdateLevel(int $UserId, int $ExperiencePoints)
     {
@@ -221,5 +219,17 @@ class UserService
         } else {
             return false;
         }
+    }
+
+    /**
+     * Set the ranking data for user with the given info
+     *
+     * @param object $userDataObject
+     * @return bool sucess
+     */
+    public function setRankingData(object $userDataObject)
+    {
+        // Register the ranking in the Redis database
+        Redis::zadd('ranking', $userDataObject['exp'], $userDataObject['nickname']);
     }
 }

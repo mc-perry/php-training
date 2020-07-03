@@ -9,7 +9,6 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ConfirmRequest;
 use App\Http\Requests\GameOverRequest;
 use App\Facades\Error;
-use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -55,8 +54,8 @@ class UserController extends Controller
         }
         // Update the level if needed
         $gameoverResponse = $this->userService->incrementExperienceAndUpdateLevel($request->id, $request->exp);
-        // Register the ranking in the Redis database
-        Redis::zadd('ranking', $gameoverResponse['exp'], $gameoverResponse['nickname']);
+        // Set the ranking data in Redis
+        $this->userService->setRankingData($gameoverResponse);
         return response()->json(['data' => $gameoverResponse], 200);
     }
 }

@@ -14,7 +14,7 @@ class UserRepository
      * ユーザーIDを指定してデータを取得する
      *
      * @param int $UserId
-     * @return User
+     * @return object
      */
     public function getUserByUserId(int $UserId)
     {
