@@ -23,5 +23,3 @@ Route::post('/user/login', 'UserController@login');
 Route::post('/user/confirm', 'UserController@confirm')->middleware('checktoken');
 
 Route::post('/user/gameover', 'UserController@gameover')->middleware('checktoken');
-
-Route::post('/user/showrank', 'RankController@showrank');

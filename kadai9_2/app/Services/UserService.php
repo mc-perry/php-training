@@ -11,6 +11,7 @@ use App\Repositories\MasterDataRepository;
 use App\Repositories\MaintenanceRepository;
 use Illuminate\Support\Facades\DB;
 use App\Facades\Error;
+use Illuminate\Support\Facades\Redis;
 
 class UserService
 {
@@ -32,12 +33,11 @@ class UserService
      * Insert user data
      *
      * @param int $user_id
-     * @return array
+     * @return object
      */
     public function getUserByUserID(int $user_id)
     {
-        $inserted_data = $this->userRepository->getUserByUserID($user_id);
-        return $inserted_data;
+        return $this->userRepository->getUserByUserID($user_id);
     }
 
     /**
@@ -48,8 +48,7 @@ class UserService
      */
     public function getTokenByUserID(int $user_id)
     {
-        $userToken = $this->userRepository->getTokenByUserID($user_id);
-        return $userToken;
+        return $this->userRepository->getTokenByUserID($user_id);
     }
 
     /**
@@ -60,8 +59,7 @@ class UserService
      */
     public function getUserByUserIDAndToken(int $user_id, string $token)
     {
-        $userObject = $this->userRepository->getUserByUserIDAndToken($user_id, $token);
-        return $userObject;
+        return $this->userRepository->getUserByUserIDAndToken($user_id, $token);
     }
 
 
@@ -156,21 +154,25 @@ class UserService
      *
      * @param int $UserId
      * @param int $ExperiencePoints
-     * @return Array $userObject
+     * @return object $userObject
      */
-    public function incrementExperienceAndUpdateLevel(int $UserId, int $ExperiencePoints)
+    public function incrementExperienceUpdateLevelAndRanking(int $UserId, int $ExperiencePoints)
     {
+        $userInfo = $this->getUserByUserID($UserId);
         try {
             // Start the database transaction
             DB::beginTransaction();
             $updatedExp = $this->incrementUserExp($UserId, $ExperiencePoints);
+            // Update the level
             $this->updateLevel($UserId, $updatedExp);
-            // If no error is thrown, commit because both transactions succeeded
+            // Set the ranking information in Redis
+            Redis::zAdd('ranking', $updatedExp, $userInfo['nickname']);
+            // If no error is thrown, commit because the transactions succeeded
             DB::commit();
             // Return the new user object with the passed user
             return $this->getUserByUserID($UserId);
         } catch (Exception $e) {
-            Log::debug("something bad happened");
+            Log::debug("Write to the db failed; something bad happened");
             DB::rollBack();
             return Error::handleError("100012");
         }

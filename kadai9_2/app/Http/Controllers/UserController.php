@@ -9,7 +9,6 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ConfirmRequest;
 use App\Http\Requests\GameOverRequest;
 use App\Facades\Error;
-use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -53,9 +52,8 @@ class UserController extends Controller
         if ($this->userService->getUserByUserID($request->id) === null) {
             Error::handleError("100011");
         }
-        // Update the level if needed
-        $gameoverResponse = $this->userService->incrementExperienceAndUpdateLevel($request->id, $request->exp);
-        $user = Redis::zadd('ranking', $gameoverResponse['exp'], $gameoverResponse['nickname']);
+        // Handle all of the database operations in a transaction
+        $gameoverResponse = $this->userService->incrementExperienceUpdateLevelAndRanking($request->id, $request->exp);
         return response()->json(['data' => $gameoverResponse], 200);
     }
 }
