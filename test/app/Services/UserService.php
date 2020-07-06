@@ -156,14 +156,18 @@ class UserService
      * @param int $ExperiencePoints
      * @return object $userObject
      */
-    public function incrementExperienceAndUpdateLevel(int $UserId, int $ExperiencePoints)
+    public function incrementExperienceUpdateLevelAndRanking(int $UserId, int $ExperiencePoints)
     {
+        $userInfo = $this->getUserByUserID($UserId);
         try {
             // Start the database transaction
             DB::beginTransaction();
             $updatedExp = $this->incrementUserExp($UserId, $ExperiencePoints);
+            // Update the level
             $this->updateLevel($UserId, $updatedExp);
-            // If no error is thrown, commit because both transactions succeeded
+            // Set the ranking information in Redis
+            Redis::zAdd('ranking', $updatedExp, $userInfo['nickname']);
+            // If no error is thrown, commit because the transactions succeeded
             DB::commit();
             // Return the new user object with the passed user
             return $this->getUserByUserID($UserId);
@@ -219,21 +223,5 @@ class UserService
         } else {
             return false;
         }
-    }
-
-    /**
-     * Set the ranking data for user with the given info
-     *
-     * @param object $userDataObject
-     * @return bool sucess
-     */
-    public function setRankingData(object $userDataObject)
-    {
-        // Register the ranking in the Redis database
-        // Set the fields to store as variables to reduce clutter of storing them
-        $expToStore = $userDataObject['exp'];
-        $nicknameToStore = $userDataObject['nickname'];
-
-        Redis::zAdd('ranking', $expToStore, $nicknameToStore);
     }
 }

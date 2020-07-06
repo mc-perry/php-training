@@ -52,10 +52,8 @@ class UserController extends Controller
         if ($this->userService->getUserByUserID($request->id) === null) {
             Error::handleError("100011");
         }
-        // Update the level if needed
-        $gameoverResponse = $this->userService->incrementExperienceAndUpdateLevel($request->id, $request->exp);
-        // Set the ranking data in Redis
-        $this->userService->setRankingData($gameoverResponse);
+        // Handle all of the database operations in a transaction
+        $gameoverResponse = $this->userService->incrementExperienceUpdateLevelAndRanking($request->id, $request->exp);
         return response()->json(['data' => $gameoverResponse], 200);
     }
 }
