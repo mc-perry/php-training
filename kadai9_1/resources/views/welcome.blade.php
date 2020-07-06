@@ -84,7 +84,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    課題7-2
+                    課題9-1
                 </div>
             </div>
         </div>

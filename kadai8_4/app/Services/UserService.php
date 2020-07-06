@@ -31,7 +31,7 @@ class UserService
      * Insert user data
      *
      * @param int $user_id
-     * @return array
+     * @return object
      */
     public function getUserByUserID(int $user_id)
     {
@@ -103,7 +103,7 @@ class UserService
      *
      * @param int $UserId
      * @param int $ExperiencePoints
-     * @return Array $userObject
+     * @return object $userObject
      */
     public function incrementExperienceAndUpdateLevel(int $UserId, int $ExperiencePoints)
     {

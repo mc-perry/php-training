@@ -168,7 +168,7 @@ class UserService
             // Return the new user object with the passed user
             return $this->getUserByUserID($UserId);
         } catch (Exception $e) {
-            Log::debug("something bad happened");
+            Log::debug("Write to the db failed; something bad happened");
             DB::rollBack();
             return Error::handleError("100012");
         }
@@ -230,6 +230,9 @@ class UserService
     public function setRankingData(object $userDataObject)
     {
         // Register the ranking in the Redis database
-        Redis::zadd('ranking', $userDataObject['exp'], $userDataObject['nickname']);
+        // Set the fields to store as variables to reduce clutter of storing them
+        $expToStore = $userDataObject['exp'];
+        $nicknameToStore = $userDataObject['nickname'];
+        Redis::zAdd('ranking', $expToStore, $nicknameToStore);
     }
 }
