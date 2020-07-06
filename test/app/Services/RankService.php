@@ -29,14 +29,11 @@ class RankService
         $ranking = array();
 
         foreach ($result as $user => $score) {
-            $rank = (Redis::zCount('ranking', $score, '+inf'));
-            $sizeOfRange = Redis::zCount('ranking', $score, $score);
-            // 同点の場合
-            if ($sizeOfRange > 1) {
-                $rank = $rank - $sizeOfRange + 1;
-            }
+            // To keep the number to the lower amount, compare against all larger numbers than this
+            $rank = Redis::zCount('ranking', $score + 1, '+inf');
+            $rankToDisplay = $rank + 1;
             array_push($ranking, [
-                'ランキング' => $rank . '位',
+                'ランキング' => $rankToDisplay . '位',
                 'nickname' => $user,
                 'スコア' => $score,
             ]);
