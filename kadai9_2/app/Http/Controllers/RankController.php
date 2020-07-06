@@ -2,26 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\RankService;
 use App\Http\Requests\ShowRankRequest;
-use Illuminate\Support\Facades\Redis;
 
 class RankController extends Controller
 {
-    public function showrank(ShowRankRequest $request)
+    private $rankService;
+
+    public function __construct(
+        RankService $rankService
+    ) {
+        $this->rankService = $rankService;
+    }
+
+    public function showRank(ShowRankRequest $request)
     {
-        $result = array();
-        $result = Redis::zRevRange('ranking', $request->from, $request->to, 'withscores');
-
-        $ranking = array();
-
-        foreach ($result as $user => $score) {
-            $rank = (Redis::zCount('ranking', $score, '+inf'));
-            array_push($ranking, [
-                'ランキング' => $rank . '位',
-                'nickname' => $user,
-                'スコア' => $score,
-            ]);
-        }
-        return response()->json($ranking);
+        $rankResult = $this->rankService->showRank($request);
+        return response()->json($rankResult);
     }
 }
