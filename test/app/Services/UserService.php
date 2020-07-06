@@ -233,6 +233,7 @@ class UserService
         // Set the fields to store as variables to reduce clutter of storing them
         $expToStore = $userDataObject['exp'];
         $nicknameToStore = $userDataObject['nickname'];
+
         Redis::zAdd('ranking', $expToStore, $nicknameToStore);
     }
 }

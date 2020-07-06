@@ -25,7 +25,7 @@ class ShowRankRequest extends BaseRequest
     {
         return [
             'from' => 'required|integer|min:0',
-            'to' => 'required|integer|min:0',
+            'to' => 'required|integer',
         ];
     }
 
