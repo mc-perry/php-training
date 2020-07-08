@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateGachaRequest;
 use App\Repositories\GachaRarityWeightlistRepository;
 use App\Repositories\GachaMasterDataRepository;
+use App\Repositories\UserGachaCardsRepository;
 
 class GachaService
 {
     private $gachaWeightlistRepository;
     private $gachaMasterDataRepository;
+    private $userGachaCardsRepository;
 
     public $rarity_map = [
         1 => 'SR',
@@ -25,15 +27,17 @@ class GachaService
 
     public function __construct(
         GachaRarityWeightlistRepository $gachaWeightlistRepository,
-        GachaMasterDataRepository $gachaMasterDataRepository
+        GachaMasterDataRepository $gachaMasterDataRepository,
+        UserGachaCardsRepository $userGachaCardsRepository
     ) {
         $this->gachaWeightlistRepository = $gachaWeightlistRepository;
         $this->gachaMasterDataRepository = $gachaMasterDataRepository;
+        $this->userGachaCardsRepository = $userGachaCardsRepository;
     }
 
     function createGacha(CreateGachaRequest $request)
     {
-        $gachaCard = ['id' => intval($request->id)];
+        $userId = intval($request->id);
 
         $gachaWeightlist = $this->gachaWeightlistRepository->getWeightlist();
 
@@ -47,7 +51,7 @@ class GachaService
         $superRareCardPct = $gachaWeightlist[0]['card_rarity'] / $totalWeight;
         $rareCardPct = $gachaWeightlist[1]['card_rarity'] / $totalWeight;
         $commonCardPct = $gachaWeightlist[2]['card_rarity'] / $totalWeight;
-        var_dump($rareCardPct);
+
         // Generates a random number between 0 and 1
         $randNum = mt_rand() / mt_getrandmax();
 
@@ -64,8 +68,9 @@ class GachaService
         // Generate a random card within the pool of that card's rarity
         $cardArray = $this->gachaMasterDataRepository->getCardsWithRarityLevel($rarityLevel);
         $cardInfo = $cardArray[array_rand($cardArray)];
-        var_dump($cardInfo);
+        $cardId = $cardInfo['id'];
+        $addUserCardResponse = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
 
-        
+        return $addUserCardResponse;
     }
 }

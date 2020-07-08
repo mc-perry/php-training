@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ユーザーテーブル
+ * Master User Data
  */
 
 namespace App\Repositories;
