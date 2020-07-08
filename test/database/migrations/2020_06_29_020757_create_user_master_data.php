@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMasterData extends Migration
+class CreateUserMasterData extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMasterData extends Migration
      */
     public function up()
     {
-        Schema::create('master_data', function (Blueprint $table) {
+        Schema::create('user_master_data', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('レベル');
             $table->integer('exp')->nullable()->default(0)->comment('経験値');
         });

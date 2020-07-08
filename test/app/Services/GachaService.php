@@ -21,9 +21,21 @@ class GachaService
     public function __construct()
     { }
 
-    function createGacha()
+    function createGacha(CreateGachaRequest $request)
     {
+        $gachaCard = ['id' => intval($request->id)];
+
+        // Generates a random number between 0 and 1
         $randNum = mt_rand() / mt_getrandmax();
-        var_dump($randNum);
+
+        if ($randNum >= 0 && $randNum < 0.6) {
+            $rarityLevel = 3;
+        } elseif ($randNum >= 0.6 && $randNum < 0.9) {
+            $rarityLevel = 2;
+        } else {
+            $rarityLevel = 1;
+        }
+
+        var_dump($rarityLevel);
     }
 }
