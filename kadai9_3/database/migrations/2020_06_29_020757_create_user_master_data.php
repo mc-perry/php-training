@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRarityWeightlist extends Migration
+class CreateUserMasterData extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateRarityWeightlist extends Migration
      */
     public function up()
     {
-        Schema::create('gacha_rarity_weightlist', function (Blueprint $table) {
-            $table->bigIncrements('id')->autoIncrement()->comment('Gacha ID');
-            $table->integer('card_rarity')->comment('User ID');
+        Schema::create('user_master_data', function (Blueprint $table) {
+            $table->bigIncrements('id')->comment('レベル');
+            $table->integer('exp')->nullable()->default(0)->comment('経験値');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateRarityWeightlist extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gacha_rarity_weightlist');
+        Schema::dropIfExists('master_data');
     }
 }

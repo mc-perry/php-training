@@ -52,6 +52,7 @@ class UserController extends Controller
         if ($this->userService->getUserByUserID($request->id) === null) {
             Error::handleError("100011");
         }
+
         // Handle all of the database operations in a transaction
         $gameoverResponse = $this->userService->incrementExperienceUpdateLevelAndRanking($request->id, $request->exp);
         return response()->json(['data' => $gameoverResponse], 200);

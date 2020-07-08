@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * ユーザーモデル
+ * Weight list model for gacha items
  */
-class MasterDataModel extends Model
+class GachaRarityWeightlistModel extends Model
 {
-    // テーブル名を設定
-    protected $table = 'user_master_data';
+    // Set the table name
+    protected $table = 'gacha_rarity_weightlist';
 
     // The primary key associated with the table.
     protected $primaryKey = 'id';
@@ -23,15 +23,7 @@ class MasterDataModel extends Model
      * @var array
      */
     protected $fillable = [
-        'exp'
+        'id', 'card_rarity'
     ];
 
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [
-        'exp' => 0
-    ];
 }
