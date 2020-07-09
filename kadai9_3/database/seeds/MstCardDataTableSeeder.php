@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class MstGachaTableSeeder extends Seeder
+class MstCardDataTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,9 +13,9 @@ class MstGachaTableSeeder extends Seeder
     public function run()
     {
         // データのクリア
-        DB::table('master_gacha_data')->truncate();
+        DB::table('master_card_data')->truncate();
 
-        DB::table('master_gacha_data')->insert([
+        DB::table('master_card_data')->insert([
             [
                 'card_name' => 'Bulbasaur',
                 'rarity' => '3',

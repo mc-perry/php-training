@@ -13,20 +13,20 @@ class GachaRarityWeightlistSeeder extends Seeder
     public function run()
     {
         // Clear the data
-        DB::table('gacha_rarity_weightlist')->truncate();
+        DB::table('gachacard_rarity_weightlist')->truncate();
 
-        DB::table('gacha_rarity_weightlist')->insert([
+        DB::table('gachacard_rarity_weightlist')->insert([
             [
-                'id' => 1,
-                'card_rarity' => 10
+                'rarity_level' => 1,
+                'rarity_level_weight' => 10
             ],
             [
-                'id' => 2,
-                'card_rarity' => 30
+                'rarity_level' => 2,
+                'rarity_level_weight' => 30
             ],
             [
-                'id' => 3,
-                'card_rarity' => 60
+                'rarity_level' => 3,
+                'rarity_level_weight' => 60
             ],
         ]);
     }

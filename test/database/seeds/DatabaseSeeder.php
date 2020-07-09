@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(GachaRarityWeightlistSeeder::class);
         $this->call(MaintenanceTableSeeder::class);
-        $this->call(MstGachaTableSeeder::class);
+        $this->call(MstCardDataTableSeeder::class);
         $this->call(UserMasterDataSeeder::class);
     }
 }

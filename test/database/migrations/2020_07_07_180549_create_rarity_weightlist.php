@@ -13,9 +13,9 @@ class CreateRarityWeightlist extends Migration
      */
     public function up()
     {
-        Schema::create('gacha_rarity_weightlist', function (Blueprint $table) {
-            $table->bigIncrements('id')->autoIncrement()->comment('Gacha ID');
-            $table->integer('card_rarity')->comment('User ID');
+        Schema::create('gachacard_rarity_weightlist', function (Blueprint $table) {
+            $table->bigIncrements('rarity_level')->autoIncrement()->comment('Card Rarity Level');
+            $table->integer('rarity_level_weight')->comment('Rarity Level Weight');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateRarityWeightlist extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gacha_rarity_weightlist');
+        Schema::dropIfExists('gachacard_rarity_weightlist');
     }
 }

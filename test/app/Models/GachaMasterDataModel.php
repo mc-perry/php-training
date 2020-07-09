@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class GachaMasterDataModel extends Model
 {
     // Set the table name
-    protected $table = 'master_gacha_data';
+    protected $table = 'master_card_data';
 
     // The primary key associated with the table.
     protected $primaryKey = 'id';

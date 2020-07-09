@@ -26,6 +26,6 @@ class CreateUserMasterData extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_data');
+        Schema::dropIfExists('user_master_data');
     }
 }

@@ -21,9 +21,6 @@ class UserGachaCardsRepository
      */
     public function addSelectedCardToUserTable(int $UserId, int $CardId)
     {
-        if (UserGachaCardsModel::where('user_id', $UserId)->exists() && UserGachaCardsModel::where('master_card_id', $CardId)->exists()) {
-            return UserGachaCardsModel::where('user_id', $UserId)->where('master_card_id', $CardId)->update(['new' => false]);
-        }
         $insertUserDataObject = array('user_id' => $UserId, 'master_card_id' => $CardId);
         return UserGachaCardsModel::create($insertUserDataObject);
     }

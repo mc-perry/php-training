@@ -17,7 +17,6 @@ class CreateUserGachaCardTable extends Migration
             $table->bigIncrements('id')->autoIncrement()->comment('ID');
             $table->integer('user_id')->comment('User ID');
             $table->integer('master_card_id')->comment('Master Card ID');
-            $table->boolean('new')->default(true)->comment('New Card');
         });
     }
 
@@ -28,6 +27,6 @@ class CreateUserGachaCardTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gacha');
+        Schema::dropIfExists('user_gacha_cards');
     }
 }

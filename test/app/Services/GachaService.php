@@ -42,15 +42,15 @@ class GachaService
         $gachaWeightlist = $this->gachaWeightlistRepository->getWeightlist();
 
         // Get percentage weight of each card
-        $superRareCardWeight = $gachaWeightlist[0]['card_rarity'];
-        $rareCardWeight = $gachaWeightlist[1]['card_rarity'];
-        $commonCardWeight = $gachaWeightlist[2]['card_rarity'];
+        $superRareCardWeight = $gachaWeightlist[0]['rarity_level_weight'];
+        $rareCardWeight = $gachaWeightlist[1]['rarity_level_weight'];
+        $commonCardWeight = $gachaWeightlist[2]['rarity_level_weight'];
         $totalWeight = $superRareCardWeight + $rareCardWeight + $commonCardWeight;
 
         // Calculate percentage values
-        $superRareCardPct = $gachaWeightlist[0]['card_rarity'] / $totalWeight;
-        $rareCardPct = $gachaWeightlist[1]['card_rarity'] / $totalWeight;
-        $commonCardPct = $gachaWeightlist[2]['card_rarity'] / $totalWeight;
+        $superRareCardPct = $superRareCardWeight / $totalWeight;
+        // $rareCardPct = $gachaWeightlist[1]['card_rarity'] / $totalWeight;
+        $commonCardPct = $commonCardWeight / $totalWeight;
 
         // Generates a random number between 0 and 1
         $randNum = mt_rand() / mt_getrandmax();
