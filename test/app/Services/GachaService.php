@@ -41,28 +41,35 @@ class GachaService
 
         $gachaWeightlist = $this->gachaWeightlistRepository->getWeightlist();
 
-        // Get percentage weight of each card
-        $superRareCardWeight = $gachaWeightlist[0]['rarity_level_weight'];
-        $rareCardWeight = $gachaWeightlist[1]['rarity_level_weight'];
-        $commonCardWeight = $gachaWeightlist[2]['rarity_level_weight'];
-        $totalWeight = $superRareCardWeight + $rareCardWeight + $commonCardWeight;
+        // Variables for the total weight and the percentage spread
+        $totalWeight = 0;
+        $percentageWeightArray = array();
 
-        // Calculate percentage values
-        $superRareCardPct = $superRareCardWeight / $totalWeight;
-        // $rareCardPct = $gachaWeightlist[1]['card_rarity'] / $totalWeight;
-        $commonCardPct = $commonCardWeight / $totalWeight;
+        foreach ($gachaWeightlist as $weight) {
+            $totalWeight += $weight['rarity_level_weight'];
+        }
+        foreach ($gachaWeightlist as $weight) {
+            array_push($percentageWeightArray, $weight['rarity_level_weight'] / $totalWeight);
+        }
 
         // Generates a random number between 0 and 1
         $randNum = mt_rand() / mt_getrandmax();
 
+        $cumulativeWeight = 0;
+        $rarityIndex = 1;
         // Assign the rarity level based on the database value
-        if ($randNum >= 0 && $randNum < $commonCardPct) {
-            $rarityLevel = 3;
-        } elseif ($randNum >= $commonCardPct && $randNum < 1 - $superRareCardPct) {
-            $rarityLevel = 2;
-        } else {
-            // It's greater than these, thus a super rare card
-            $rarityLevel = 1;
+        foreach ($percentageWeightArray as $percentageWeight) {
+            if ($randNum >= $cumulativeWeight && $randNum < $cumulativeWeight + $percentageWeight) {
+                $rarityLevel = $rarityIndex;
+            }
+            // Increment the weight
+            $cumulativeWeight = $cumulativeWeight + $percentageWeight;
+            // Increment the counter
+            $rarityIndex++;
+        }
+        // If for some reason no rarity level was assigned, assign common
+        if (!$rarityLevel) {
+            $rarityLevel = $rarityIndex;
         }
 
         // Generate a random card within the pool of that card's rarity
