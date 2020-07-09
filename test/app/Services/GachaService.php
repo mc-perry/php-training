@@ -39,7 +39,7 @@ class GachaService
     {
         $userId = intval($request->id);
 
-        $gachaWeightlist = $this->cardWeightlistRepository->getWeightlist();
+        $gachaWeightlist = $this->cardRarityWeightlistRepository->getWeightlist();
 
         // Variables for the total weight and the percentage spread
         $totalWeight = 0;
