@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(GachaRarityWeightlistSeeder::class);
+        $this->call(CardRarityWeightlistSeeder::class);
         $this->call(MaintenanceTableSeeder::class);
         $this->call(MstCardDataTableSeeder::class);
         $this->call(UserMasterDataSeeder::class);

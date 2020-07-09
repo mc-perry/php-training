@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Laravel</title>
+        <title>Gacha Game</title>
 
         <!-- Fonts -->
         <link
@@ -49,17 +49,7 @@
             }
 
             .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.1rem;
-                text-decoration: none;
-                text-transform: uppercase;
+                font-size: 32px;
             }
 
             .m-b-md {
@@ -68,7 +58,7 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="full-height">
             @if (Route::has('login'))
             <div class="top-right links">
                 @auth
@@ -84,7 +74,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    課題9-1
+                    課題9-3
                 </div>
             </div>
         </div>

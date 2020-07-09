@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Model for gacha items data
  */
-class GachaMasterDataModel extends Model
+class MasterCardDataModel extends Model
 {
     // Set the table name
     protected $table = 'master_card_data';

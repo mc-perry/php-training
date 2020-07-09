@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class GachaRarityWeightlistSeeder extends Seeder
+class CardRarityWeightlistSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,9 +13,9 @@ class GachaRarityWeightlistSeeder extends Seeder
     public function run()
     {
         // Clear the data
-        DB::table('gachacard_rarity_weightlist')->truncate();
+        DB::table('card_rarity_weightlist')->truncate();
 
-        DB::table('gachacard_rarity_weightlist')->insert([
+        DB::table('card_rarity_weightlist')->insert([
             [
                 'rarity_level' => 1,
                 'rarity_level_weight' => 10

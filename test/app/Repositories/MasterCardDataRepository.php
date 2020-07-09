@@ -6,9 +6,9 @@
 
 namespace App\Repositories;
 
-use App\Models\GachaMasterDataModel;
+use App\Models\MasterCardDataModel;
 
-class GachaMasterDataRepository
+class MasterCardDataRepository
 {
     /**
      * Get all cards with given rarity level
@@ -17,6 +17,6 @@ class GachaMasterDataRepository
      */
     public function getCardsWithRarityLevel(int $rarityLevel)
     {
-        return GachaMasterDataModel::where('rarity', $rarityLevel)->get()->toArray();
+        return MasterCardDataModel::where('rarity', $rarityLevel)->get()->toArray();
     }
 }

@@ -13,6 +13,15 @@ class UserRepository
     /**
      * ユーザーIDを指定してデータを取得する
      *
+     * @return Array
+     */
+    public function getAllUsers()
+    {
+        return UserModel::all()->toArray();
+    }
+    /**
+     * ユーザーIDを指定してデータを取得する
+     *
      * @param int $UserId
      * @return object
      */

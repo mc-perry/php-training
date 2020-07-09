@@ -20,6 +20,10 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
+    public function getAll() {
+        return $this->userService->getAllUsers();
+    }
+
     /**
      * Create a user
      *

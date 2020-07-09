@@ -9,14 +9,14 @@ namespace App\Services;
 use App\Facades\Error;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateGachaRequest;
-use App\Repositories\GachaRarityWeightlistRepository;
-use App\Repositories\GachaMasterDataRepository;
+use App\Repositories\CardRarityWeightlistRepository;
+use App\Repositories\MasterCardDataRepository;
 use App\Repositories\UserGachaCardsRepository;
 
 class GachaService
 {
-    private $gachaWeightlistRepository;
-    private $gachaMasterDataRepository;
+    private $cardRarityWeightlistRepository;
+    private $masterCardDataRepository;
     private $userGachaCardsRepository;
 
     public $rarity_map = [
@@ -26,12 +26,12 @@ class GachaService
     ];
 
     public function __construct(
-        GachaRarityWeightlistRepository $gachaWeightlistRepository,
-        GachaMasterDataRepository $gachaMasterDataRepository,
+        CardRarityWeightlistRepository $cardRarityWeightlistRepository,
+        MasterCardDataRepository $masterCardDataRepository,
         UserGachaCardsRepository $userGachaCardsRepository
     ) {
-        $this->gachaWeightlistRepository = $gachaWeightlistRepository;
-        $this->gachaMasterDataRepository = $gachaMasterDataRepository;
+        $this->cardRarityWeightlistRepository = $cardRarityWeightlistRepository;
+        $this->masterCardDataRepository = $masterCardDataRepository;
         $this->userGachaCardsRepository = $userGachaCardsRepository;
     }
 
@@ -39,7 +39,7 @@ class GachaService
     {
         $userId = intval($request->id);
 
-        $gachaWeightlist = $this->gachaWeightlistRepository->getWeightlist();
+        $gachaWeightlist = $this->cardWeightlistRepository->getWeightlist();
 
         // Variables for the total weight and the percentage spread
         $totalWeight = 0;
@@ -73,7 +73,7 @@ class GachaService
         }
 
         // Generate a random card within the pool of that card's rarity
-        $cardArray = $this->gachaMasterDataRepository->getCardsWithRarityLevel($rarityLevel);
+        $cardArray = $this->masterCardDataRepository->getCardsWithRarityLevel($rarityLevel);
         $cardInfo = $cardArray[array_rand($cardArray)];
         $cardId = $cardInfo['id'];
         $addUserCardResponse = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);

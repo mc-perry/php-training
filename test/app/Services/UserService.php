@@ -30,7 +30,18 @@ class UserService
     }
 
     /**
-     * Insert user data
+     * Get all users
+     *
+     * @return Array
+     */
+    public function getAllUsers()
+    {
+        return $this->userRepository->getAllUsers();
+    }
+
+
+    /**
+     * Get user by id
      *
      * @param int $user_id
      * @return object
