@@ -33,9 +33,9 @@ class GachaController extends Controller
         return response()->json($gachaResult);
     }
 
-    public function tenConsecutiveGachas(CreateGachaRequest $request)
+    public function issueConsecutiveGachas(CreateGachaRequest $request)
     {
-        $gachaResult = $this->gachaService->tenConsecutiveGachas($request);
+        $gachaResult = $this->gachaService->issueConsecutiveGachas($request);
         return response()->json($gachaResult);
     }
 }

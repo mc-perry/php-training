@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class MasterRareGachaLevelSeeder extends Seeder
+class MasterConsecutiveGachaDataSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,11 +13,12 @@ class MasterRareGachaLevelSeeder extends Seeder
     public function run()
     {
         // データのクリア
-        DB::table('master_rare_gacha_level')->truncate();
+        DB::table('mst_consecutive_gacha')->truncate();
 
-        DB::table('master_rare_gacha_level')->insert([
+        DB::table('mst_consecutive_gacha')->insert([
             [
-                'maximum_rarity' => 3,
+                'gacha_card_count' => 6,
+                'maximum_rarity' => 2,
             ],
         ]);
     }

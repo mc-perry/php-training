@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Weight list model for gacha items
  */
-class CardRarityWeightlistModel extends Model
+class ConsecutiveGachaRarityWeightlistModel extends Model
 {
     // Set the table name
-    protected $table = 'card_rarity_weightlist';
+    protected $table = 'consecutive_gacha_rarity_weightlist';
 
     // The primary key associated with the table.
     protected $primaryKey = 'id';
@@ -23,7 +23,6 @@ class CardRarityWeightlistModel extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'card_rarity'
+        'rarity_level', 'rarity_level_weight'
     ];
-
 }

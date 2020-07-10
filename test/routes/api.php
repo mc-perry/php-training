@@ -25,4 +25,4 @@ Route::post('/user/showrank', 'RankController@showrank');
 
 // Gacha routes
 Route::post('/gacha/creategacha', 'GachaController@creategacha');
-Route::post('/gacha/tenconsecutivegachas', 'GachaController@tenconsecutivegachas');
+Route::post('/gacha/issueconsecutivegachas', 'GachaController@issueconsecutivegachas');

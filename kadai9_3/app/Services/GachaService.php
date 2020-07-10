@@ -9,43 +9,48 @@ namespace App\Services;
 use App\Facades\Error;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateGachaRequest;
-use App\Repositories\CardRarityWeightlistRepository;
+use App\Repositories\SingleshotGachaRarityWeightlistRepository;
+use App\Repositories\ConsecutiveGachaRarityWeightlistRepository;
 use App\Repositories\MasterCardDataRepository;
 use App\Repositories\UserGachaCardsRepository;
-use App\Repositories\MasterRareGachaLevelRepository;
+use App\Repositories\MasterConsecutiveGachaDataRepository;
 
 class GachaService
 {
-    private $cardRarityWeightlistRepository;
+    private $singleshotWeightlistRepository;
+    private $consecutiveRarityWeightlistRepository;
     private $masterCardDataRepository;
     private $userGachaCardsRepository;
-    private $masterRareGachaLevelRepository;
+    private $masterConsecutiveGachaDataRepository;
 
     private $maximumRareGachaRarityLevel;
 
     public function __construct(
-        CardRarityWeightlistRepository $cardRarityWeightlistRepository,
+        SingleshotGachaRarityWeightlistRepository $singleshotWeightlistRepository,
+        ConsecutiveGachaRarityWeightlistRepository $consecutiveRarityWeightlistRepository,
         MasterCardDataRepository $masterCardDataRepository,
         UserGachaCardsRepository $userGachaCardsRepository,
-        MasterRareGachaLevelRepository $masterRareGachaLevelRepository
+        MasterConsecutiveGachaDataRepository $masterConsecutiveGachaDataRepository
     ) {
-        $this->cardRarityWeightlistRepository = $cardRarityWeightlistRepository;
+        $this->singleshotWeightlistRepository = $singleshotWeightlistRepository;
+        $this->consecutiveRarityWeightlistRepository = $consecutiveRarityWeightlistRepository;
         $this->masterCardDataRepository = $masterCardDataRepository;
         $this->userGachaCardsRepository = $userGachaCardsRepository;
-        $this->masterRareGachaLevelRepository = $masterRareGachaLevelRepository;
+        $this->masterConsecutiveGachaDataRepository = $masterConsecutiveGachaDataRepository;
 
         $this->maximumRareGachaRarityLevel = $this->getMaximumRareGachaRarityLevel();
     }
 
     /**
-     * Create a gacha card
+     * Get maximum level for a rare gacha card
      *
      * @return integer
      */
     private function getMaximumRareGachaRarityLevel()
     {
-        return $this->masterRareGachaLevelRepository->getMaximumRareGachaRarityLevel();
+        return $this->masterConsecutiveGachaDataRepository->getMaximumRareGachaRarityLevel();
     }
+
 
     /**
      * Create a gacha card
@@ -57,7 +62,7 @@ class GachaService
     {
         $userId = intval($request->id);
 
-        $gachaWeightlist = $this->cardRarityWeightlistRepository->getWeightlist();
+        $gachaWeightlist = $this->singleshotWeightlistRepository->getWeightlist();
 
         // Variables for the total weight and the percentage spread
         $totalWeight = 0;
@@ -83,17 +88,19 @@ class GachaService
     }
 
     /**
-     * Create ten consecutive gacha cards
+     * Create consecutive gacha cards
      *
      * @param CreateGachaRequest $request
      * @return object
      */
-    function tenConsecutiveGachas(CreateGachaRequest $request)
+    function issueConsecutiveGachas(CreateGachaRequest $request)
     {
         // Get the user ID
         $userId = intval($request->id);
         // Get the weightlist object
-        $gachaWeightlist = $this->cardRarityWeightlistRepository->getWeightlist();
+        $gachaWeightlist = $this->consecutiveRarityWeightlistRepository->getWeightlist();
+
+        $numOfGachaCards = $this->masterConsecutiveGachaDataRepository->getNumberOfConsecutiveGachaCards();
 
         // Variables for the total weight and the percentage spread
         $totalWeight = 0;
@@ -112,7 +119,7 @@ class GachaService
         }
 
         // Call 9 times for the first nine randomly generated gacha cards
-        for ($i = 0; $i < 9; $i++) {
+        for ($i = 0; $i < $numOfGachaCards - 1; $i++) {
             // Assign rarity level from percentage array
             $rarityLevel = $this->assignRarityLevelFromPercentageArray($percentageWeightArray);
 

@@ -6,9 +6,9 @@
 
 namespace App\Repositories;
 
-use App\Models\CardRarityWeightlistModel;
+use App\Models\SingleshotGachaRarityWeightlistModel;
 
-class CardRarityWeightlistRepository
+class SingleshotGachaRarityWeightlistRepository
 {
     /**
      * Get weightlist
@@ -17,6 +17,6 @@ class CardRarityWeightlistRepository
      */
     public function getWeightlist()
     {
-        return CardRarityWeightlistModel::all()->toArray();
+        return SingleshotGachaRarityWeightlistModel::all()->toArray();
     }
 }
