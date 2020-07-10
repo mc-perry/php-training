@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MaintenanceTableSeeder::class);
         $this->call(MstCardDataTableSeeder::class);
         $this->call(UserMasterDataSeeder::class);
+        $this->call(MasterRareGachaLevelSeeder::class);
     }
 }

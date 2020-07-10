@@ -28,6 +28,14 @@ class CardRarityWeightlistSeeder extends Seeder
                 'rarity_level' => 3,
                 'rarity_level_weight' => 60
             ],
+            [
+                'rarity_level' => 4,
+                'rarity_level_weight' => 100
+            ],
+            [
+                'rarity_level' => 5,
+                'rarity_level_weight' => 150
+            ],
         ]);
     }
 }

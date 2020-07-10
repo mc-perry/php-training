@@ -22,6 +22,6 @@ class UserGachaCardsRepository
     public function addSelectedCardToUserTable(int $UserId, int $CardId)
     {
         $insertUserDataObject = array('user_id' => $UserId, 'master_card_id' => $CardId);
-        return UserGachaCardsModel::create($insertUserDataObject);
+        return UserGachaCardsModel::create($insertUserDataObject)->toArray();
     }
 }

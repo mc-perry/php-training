@@ -17,17 +17,12 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/user/getall', 'UserController@getall');
-
 Route::post('/user/create', 'UserController@create');
-
 Route::post('/user/login', 'UserController@login');
-
 Route::post('/user/confirm', 'UserController@confirm')->middleware('checktoken');
-
 Route::post('/user/gameover', 'UserController@gameover')->middleware('checktoken');
-
 Route::post('/user/showrank', 'RankController@showrank');
 
 // Gacha routes
-
-Route::post('/user/creategacha', 'GachaController@creategacha');
+Route::post('/gacha/creategacha', 'GachaController@creategacha');
+Route::post('/gacha/tenconsecutivegachas', 'GachaController@tenconsecutivegachas');

@@ -24,13 +24,18 @@ class GachaController extends Controller
     public function index()
     {
         $users = $this->userService->getAllUsers();
-        var_dump($users);
         return view('gachagame.index')->with('users', $users);
     }
 
     public function createGacha(CreateGachaRequest $request)
     {
         $gachaResult = $this->gachaService->createGacha($request);
+        return response()->json($gachaResult);
+    }
+
+    public function tenConsecutiveGachas(CreateGachaRequest $request)
+    {
+        $gachaResult = $this->gachaService->tenConsecutiveGachas($request);
         return response()->json($gachaResult);
     }
 }

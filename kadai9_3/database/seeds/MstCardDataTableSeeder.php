@@ -116,6 +116,26 @@ class MstCardDataTableSeeder extends Seeder
                 'card_name' => 'Pikachu',
                 'rarity' => '1',
             ],
+            [
+                'card_name' => 'Raichu',
+                'rarity' => '4',
+            ],
+            [
+                'card_name' => 'Sandshrew',
+                'rarity' => '4',
+            ],
+            [
+                'card_name' => 'Sandslash',
+                'rarity' => '5',
+            ],
+            [
+                'card_name' => 'Nidoran',
+                'rarity' => '5',
+            ],
+            [
+                'card_name' => 'Nidorina',
+                'rarity' => '5',
+            ],
         ]);
     }
 }
