@@ -11,41 +11,28 @@ use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateGachaRequest;
 use App\Repositories\MasterCardDataRepository;
 use App\Repositories\UserGachaCardsRepository;
-use App\Repositories\MstGachaRarityWeightlistRepository;
-use App\Repositories\MasterConsecutiveGachaDataRepository;
+use App\Repositories\GachaMasterInfoRepository;
 
 class GachaService
 {
     private $masterCardDataRepository;
-    private $masterConsecutiveGachaDataRepository;
-    private $masterGachaRarityWeightlistRepository;
+    private $gachaMasterInfoRepository;
     private $userGachaCardsRepository;
 
     private $maximumRareGachaRarityLevel;
 
     public function __construct(
         MasterCardDataRepository $masterCardDataRepository,
-        MasterConsecutiveGachaDataRepository $masterConsecutiveGachaDataRepository,
-        MstGachaRarityWeightlistRepository $masterGachaRarityWeightlistRepository,
+        GachaMasterInfoRepository $gachaMasterInfoRepository,
         UserGachaCardsRepository $userGachaCardsRepository
 
     ) {
         $this->masterCardDataRepository = $masterCardDataRepository;
-        $this->masterConsecutiveGachaDataRepository = $masterConsecutiveGachaDataRepository;
-        $this->masterGachaRarityWeightlistRepository = $masterGachaRarityWeightlistRepository;
+        $this->gachaMasterInfoRepository = $gachaMasterInfoRepository;
         $this->userGachaCardsRepository = $userGachaCardsRepository;
 
-        $this->maximumRareGachaRarityLevel = $this->getMaximumRareGachaRarityLevel();
-    }
-
-    /**
-     * Get maximum level for a rare gacha card
-     *
-     * @return integer
-     */
-    private function getMaximumRareGachaRarityLevel()
-    {
-        return $this->masterConsecutiveGachaDataRepository->getMaximumRareGachaRarityLevel();
+        // Set number of cards to be issued later in a different way
+        // $this->maximumRareGachaRarityLevel = $this->getMaximumRareGachaRarityLevel();
     }
 
 
@@ -57,9 +44,17 @@ class GachaService
      */
     function createGacha(CreateGachaRequest $request)
     {
-        $userId = intval($request->id);
+        $userId = intval($request->user_id);
+        $gachaId = intval($request->gacha_id);
 
-        $gachaWeightlist = $this->singleshotWeightlistRepository->getWeightlist();
+        $gachaMasterInfo = $this->gachaMasterInfoRepository->getGachaMasterInfo($gachaId);
+        var_dump($gachaMasterInfo);
+        if (!$gachaMasterInfo) {
+            Error::handleError("100011");
+        }
+
+        $numberOfCardsToIssue = $gachaMasterInfo['number_of_cards'];
+        $maximumRarityWeightIndex = $gachaMasterInfo['maximum_rarity'];
 
         // Variables for the total weight and the percentage spread
         $totalWeight = 0;

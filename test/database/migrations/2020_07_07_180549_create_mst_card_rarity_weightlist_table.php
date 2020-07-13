@@ -13,11 +13,11 @@ class CreateMstCardRarityWeightlistTable extends Migration
      */
     public function up()
     {
-        Schema::create('mst_card_rarity_weightlist', function (Blueprint $table) {
+        Schema::create('gacha_to_card_weightlist', function (Blueprint $table) {
             $table->integer('card_id')->comment('Card ID');
+            $table->integer('gacha_id')->comment('Gacha ID');
             $table->integer('card_rarity')->comment('Card Rarity');
-            $table->integer('card_single_weight')->comment('Gacha Card Single Weight Level');
-            $table->integer('card_consecutive_weight')->comment('Gacha Card Tentimes Weight');
+            $table->integer('card_weight')->comment('Gacha Card Single Weight Level');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateMstCardRarityWeightlistTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mst_card_rarity_weightlist');
+        Schema::dropIfExists('gacha_to_card_weightlist');
     }
 }

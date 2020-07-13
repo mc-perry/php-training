@@ -14,7 +14,8 @@ class CreateGachaRequest extends BaseRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'gacha_id' => 'required|integer',
         ];
     }
 
@@ -26,8 +27,10 @@ class CreateGachaRequest extends BaseRequest
     public function messages()
     {
         return [
-            'id.required' => 'IDを入力して下さい。',
-            'id.integer' => '整数を入力してください。',
+            'user_id.required' => 'user_idを入力して下さい。',
+            'user_id.integer' => '整数を入力してください。',
+            'gacha_id.required' => 'gacha_idを入力して下さい。',
+            'gacha_id.integer' => '整数を入力してください。',
         ];
     }
 }
