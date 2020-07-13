@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class MasterConsecutiveGachaDataSeeder extends Seeder
+class MstConsecutiveGachaDataSeeder extends Seeder
 {
     /**
      * Run the database seeds.

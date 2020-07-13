@@ -9,34 +9,31 @@ namespace App\Services;
 use App\Facades\Error;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateGachaRequest;
-use App\Repositories\SingleshotGachaRarityWeightlistRepository;
-use App\Repositories\ConsecutiveGachaRarityWeightlistRepository;
 use App\Repositories\MasterCardDataRepository;
 use App\Repositories\UserGachaCardsRepository;
+use App\Repositories\MstGachaRarityWeightlistRepository;
 use App\Repositories\MasterConsecutiveGachaDataRepository;
 
 class GachaService
 {
-    private $singleshotWeightlistRepository;
-    private $consecutiveRarityWeightlistRepository;
     private $masterCardDataRepository;
-    private $userGachaCardsRepository;
     private $masterConsecutiveGachaDataRepository;
+    private $masterGachaRarityWeightlistRepository;
+    private $userGachaCardsRepository;
 
     private $maximumRareGachaRarityLevel;
 
     public function __construct(
-        SingleshotGachaRarityWeightlistRepository $singleshotWeightlistRepository,
-        ConsecutiveGachaRarityWeightlistRepository $consecutiveRarityWeightlistRepository,
         MasterCardDataRepository $masterCardDataRepository,
-        UserGachaCardsRepository $userGachaCardsRepository,
-        MasterConsecutiveGachaDataRepository $masterConsecutiveGachaDataRepository
+        MasterConsecutiveGachaDataRepository $masterConsecutiveGachaDataRepository,
+        MstGachaRarityWeightlistRepository $masterGachaRarityWeightlistRepository,
+        UserGachaCardsRepository $userGachaCardsRepository
+
     ) {
-        $this->singleshotWeightlistRepository = $singleshotWeightlistRepository;
-        $this->consecutiveRarityWeightlistRepository = $consecutiveRarityWeightlistRepository;
         $this->masterCardDataRepository = $masterCardDataRepository;
-        $this->userGachaCardsRepository = $userGachaCardsRepository;
         $this->masterConsecutiveGachaDataRepository = $masterConsecutiveGachaDataRepository;
+        $this->masterGachaRarityWeightlistRepository = $masterGachaRarityWeightlistRepository;
+        $this->userGachaCardsRepository = $userGachaCardsRepository;
 
         $this->maximumRareGachaRarityLevel = $this->getMaximumRareGachaRarityLevel();
     }
@@ -83,7 +80,10 @@ class GachaService
         $cardInfo = $cardArray[array_rand($cardArray)];
         $cardId = $cardInfo['id'];
         $addUserCardResponse = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
+        // Add whether or not the card is new to the return object information
         $addUserCardResponse['new'] = !$this->userGachaCardsRepository->cardExistsForUser($userId, $cardId);
+        // Add the rarity level to the return object also
+        $addUserCardResponse['rarity'] = $rarityLevel;
 
         return $addUserCardResponse;
     }
@@ -98,9 +98,11 @@ class GachaService
     {
         // Get the user ID
         $userId = intval($request->id);
+
         // Get the weightlist object
         $gachaWeightlist = $this->consecutiveRarityWeightlistRepository->getWeightlist();
 
+        // Get the number of consecutive cards to issue from the db
         $numOfGachaCards = $this->masterConsecutiveGachaDataRepository->getNumberOfConsecutiveGachaCards();
 
         // Variables for the total weight and the percentage spread
@@ -123,7 +125,7 @@ class GachaService
         for ($i = 0; $i < $numOfGachaCards - 1; $i++) {
             // Assign rarity level from percentage array
             $rarityLevel = $this->assignRarityLevelFromPercentageArray($percentageWeightArray);
-
+            var_dump($rarityLevel);
             // Generate a random card within the pool of that card's rarity
             $cardArray = $this->masterCardDataRepository->getCardsWithRarityLevel($rarityLevel);
             $cardInfo = $cardArray[array_rand($cardArray)];
@@ -134,7 +136,11 @@ class GachaService
             $newValue = !$cardExists;
 
             $gachaCard = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
+            // Add the new value to the return array object
             $gachaCard['new'] = $newValue;
+            // Add the rarity level to the return object also
+            $gachaCard['rarity'] = $rarityLevel;
+
             array_push($returnGachaCardArray, $gachaCard);
         }
 
@@ -173,7 +179,8 @@ class GachaService
         $gachaCard = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
         // Add the new value to the return array object
         $gachaCard['new'] = $newValue;
-
+        // Add the rarity level to the return object also
+        $gachaCard['rarity'] = $rarityLevel;
         array_push($returnGachaCardArray, $gachaCard);
 
         return $returnGachaCardArray;
