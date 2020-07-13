@@ -24,4 +24,16 @@ class UserGachaCardsRepository
         $insertUserDataObject = array('user_id' => $UserId, 'master_card_id' => $CardId);
         return UserGachaCardsModel::create($insertUserDataObject)->toArray();
     }
+
+    /**
+     * Determine if card exists for the given user
+     *
+     * @param int $UserId
+     * @param int $CardId
+     * @return bool
+     */
+    public function cardExistsForUser(int $UserId, int $CardId)
+    {
+        return UserGachaCardsModel::query()->where('user_id', $UserId)->where('master_card_id', $CardId)->exists();
+    }
 }

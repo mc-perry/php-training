@@ -83,6 +83,7 @@ class GachaService
         $cardInfo = $cardArray[array_rand($cardArray)];
         $cardId = $cardInfo['id'];
         $addUserCardResponse = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
+        $addUserCardResponse['new'] = !$this->userGachaCardsRepository->cardExistsForUser($userId, $cardId);
 
         return $addUserCardResponse;
     }
@@ -118,7 +119,7 @@ class GachaService
             array_push($percentageWeightArray, $weight['rarity_level_weight'] / $totalWeight);
         }
 
-        // Call 9 times for the first nine randomly generated gacha cards
+        // Call x times for the first x-1 randomly generated gacha cards
         for ($i = 0; $i < $numOfGachaCards - 1; $i++) {
             // Assign rarity level from percentage array
             $rarityLevel = $this->assignRarityLevelFromPercentageArray($percentageWeightArray);
@@ -127,7 +128,13 @@ class GachaService
             $cardArray = $this->masterCardDataRepository->getCardsWithRarityLevel($rarityLevel);
             $cardInfo = $cardArray[array_rand($cardArray)];
             $cardId = $cardInfo['id'];
+
+            // Get the new value before adding card to the db
+            $cardExists = $this->userGachaCardsRepository->cardExistsForUser($userId, $cardId);
+            $newValue = !$cardExists;
+
             $gachaCard = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
+            $gachaCard['new'] = $newValue;
             array_push($returnGachaCardArray, $gachaCard);
         }
 
@@ -157,7 +164,16 @@ class GachaService
         $cardArray = $this->masterCardDataRepository->getCardsWithRarityLevel($rarityLevel);
         $cardInfo = $cardArray[array_rand($cardArray)];
         $cardId = $cardInfo['id'];
+
+        // Get the new value before adding card to the db
+        $cardExists = $this->userGachaCardsRepository->cardExistsForUser($userId, $cardId);
+        $newValue = !$cardExists;
+
+        // Add the card to the db
         $gachaCard = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
+        // Add the new value to the return array object
+        $gachaCard['new'] = $newValue;
+
         array_push($returnGachaCardArray, $gachaCard);
 
         return $returnGachaCardArray;
