@@ -18,6 +18,6 @@ class UserGachaCardsModel extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'user_id', 'master_card_id', 'new'
+        'id', 'user_id', 'master_card_id'
     ];
 }

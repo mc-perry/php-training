@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class MstCardDataTableSeeder extends Seeder
+class MasterCardDataTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
