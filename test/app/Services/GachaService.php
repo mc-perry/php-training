@@ -136,9 +136,14 @@ class GachaService
         $cardInfo = $cardArray[$indexOfCardToIssue];
         $cardId = $cardInfo['card_id'];
 
+        // Add  new to the return object before adding card to the db
+        $cardExists = $this->userGachaCardsRepository->cardExistsForUser($userId, $cardId);
+
+        // Add card to the db
         $addUserCardResponse = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
-        // Add whether or not the card is new to the return object information
-        $addUserCardResponse['new'] = !$this->userGachaCardsRepository->cardExistsForUser($userId, $cardId);
+
+        // Set whether it is a new card
+        $addUserCardResponse['new'] = !$cardExists;
         // Add the rarity level to the return object also
         $addUserCardResponse['card_rarity'] = $cardRarityToUse;
 
