@@ -26,6 +26,7 @@ class MstRarityToCardMapModel extends Model
         'gacha_id',
         'rarity_level',
         'card_id',
-        'card_weight'
+        'singleshot_weight',
+        'tentimes_weight'
     ];
 }

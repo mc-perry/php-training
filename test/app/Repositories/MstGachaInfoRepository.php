@@ -17,6 +17,6 @@ class MstGachaInfoRepository
      */
     public function getGachaMasterInfo(int $GachaId)
     {
-        return MstGachaInfoModel::where('gacha_id', $GachaId)->get()->toArray();
+        return MstGachaInfoModel::where('gacha_id', $GachaId)->first()->toArray();
     }
 }

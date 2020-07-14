@@ -26,6 +26,18 @@ class UserGachaCardsRepository
     }
 
     /**
+     * Add array of cards to users cards
+     *
+     * @param array $CardsToInsert
+     * @return bool
+     */
+    public function addCardsToUserTableFromArray(array $CardsToInsert)
+    {
+        return UserGachaCardsModel::insert($CardsToInsert);
+    }
+
+
+    /**
      * Determine if card exists for the given user
      *
      * @param int $UserId

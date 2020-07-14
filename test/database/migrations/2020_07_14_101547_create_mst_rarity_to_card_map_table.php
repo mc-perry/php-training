@@ -18,7 +18,8 @@ class CreateMstRarityToCardMapTable extends Migration
             $table->integer('gacha_id')->comment('Gacha ID');
             $table->integer('rarity_level')->comment('Rarity Level');
             $table->integer('card_id')->comment('Card ID');
-            $table->integer('card_weight')->comment('Card weight');
+            $table->integer('singleshot_weight')->comment('Single Shot Weight');
+            $table->integer('tentimes_weight')->comment('Ten Times Weight');
         });
     }
 

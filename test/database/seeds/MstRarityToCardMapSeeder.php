@@ -20,67 +20,78 @@ class MstRarityToCardMapSeeder extends Seeder
                 'gacha_id' => 1,
                 'rarity_level' => 1,
                 'card_id' => 3,
-                'card_weight' => 40,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 1,
                 'rarity_level' => 1,
                 'card_id' => 6,
-                'card_weight' => 60,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 1,
                 'rarity_level' => 2,
                 'card_id' => 2,
-                'card_weight' => 100,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 1,
                 'rarity_level' => 2,
                 'card_id' => 5,
-                'card_weight' => 20,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 1,
                 'rarity_level' => 3,
                 'card_id' => 1,
-                'card_weight' => 80,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 1,
                 'rarity_level' => 3,
                 'card_id' => 7,
-                'card_weight' => 20,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 2,
                 'rarity_level' => 1,
                 'card_id' => 9,
-                'card_weight' => 30,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 2,
                 'rarity_level' => 1,
                 'card_id' => 12,
-                'card_weight' => 70,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 2,
                 'rarity_level' => 2,
                 'card_id' => 8,
-                'card_weight' => 100,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 2,
                 'rarity_level' => 3,
                 'card_id' => 13,
-                'card_weight' => 50,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
             [
                 'gacha_id' => 2,
                 'rarity_level' => 3,
                 'card_id' => 14,
-                'card_weight' => 50,
+                'singleshot_weight' => 20,
+                'tentimes_weight' => 20
             ],
         ]);
     }
