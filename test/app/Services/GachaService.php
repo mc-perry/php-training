@@ -10,59 +10,35 @@ use App\Facades\Error;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateGachaRequest;
 // Repositories
-use App\Repositories\GachaMasterInfoRepository;
-use App\Repositories\GachaToRarityMapRepository;
-use App\Repositories\MasterCardDataRepository;
-use App\Repositories\RarityToCardMapRepository;
+use App\Repositories\MstCardDataRepository;
+use App\Repositories\MstGachaInfoRepository;
+use App\Repositories\MstGachaToRarityMapRepository;
+use App\Repositories\MstRarityToCardMapRepository;
 use App\Repositories\UserGachaCardsRepository;
 
 class GachaService
 {
-    private $gachaMasterInfoRepository;
-    private $gachaToRarityMapRepository;
-    private $masterCardDataRepository;
-    private $rarityToCardMapRepository;
+    private $mstCardDataRepository;
+    private $mstGachaInfoRepository;
+    private $mstGachaToRarityMapRepository;
+    private $mstRarityToCardMapRepository;
     private $userGachaCardsRepository;
 
     public function __construct(
-        GachaMasterInfoRepository $gachaMasterInfoRepository,
-        GachaToRarityMapRepository $gachaToRarityMapRepository,
-        MasterCardDataRepository $masterCardDataRepository,
-        RarityToCardMapRepository $rarityToCardMapRepository,
+        MstCardDataRepository $mstCardDataRepository,
+        MstGachaInfoRepository $mstGachaInfoRepository,
+        MstGachaToRarityMapRepository $mstGachaToRarityMapRepository,
+        MstRarityToCardMapRepository $mstRarityToCardMapRepository,
         UserGachaCardsRepository $userGachaCardsRepository
-
     ) {
-        $this->gachaMasterInfoRepository = $gachaMasterInfoRepository;
-        $this->gachaToRarityMapRepository = $gachaToRarityMapRepository;
-        $this->masterCardDataRepository = $masterCardDataRepository;
-        $this->rarityToCardMapRepository = $rarityToCardMapRepository;
+        $this->mstCardDataRepository = $mstCardDataRepository;
+        $this->mstGachaInfoRepository = $mstGachaInfoRepository;
+        $this->mstGachaToRarityMapRepository = $mstGachaToRarityMapRepository;
+        $this->mstRarityToCardMapRepository = $mstRarityToCardMapRepository;
         $this->userGachaCardsRepository = $userGachaCardsRepository;
     }
 
     /** Helper functions */
-
-    private function assignItemFromPercentageArray($percentageWeightArray)
-    {
-        // Generates a random number between 0 and 1
-        $randNum = mt_rand() / mt_getrandmax();
-
-        $cumulativeWeight = 0;
-        $itemIndex = 1;
-
-        // Assign the rarity level based on the database value
-        foreach ($percentageWeightArray as $percentageWeight) {
-            if ($randNum >= $cumulativeWeight && $randNum < $cumulativeWeight + $percentageWeight) {
-                return $itemIndex;
-            }
-            // Increment the weight
-            $cumulativeWeight = $cumulativeWeight + $percentageWeight;
-            // Increment the counter
-            $itemIndex++;
-        }
-
-        // If for some reason no rarity level was assigned, assign first
-        return $itemIndex;
-    }
 
     private function assignIndexFromPercentageArray($percentageWeightArray)
     {
@@ -98,7 +74,7 @@ class GachaService
         $userId = intval($request->user_id);
         $gachaId = intval($request->gacha_id);
 
-        $gachaToRarityMap = $this->gachaToRarityMapRepository->getMapForGacha($gachaId);
+        $gachaToRarityMap = $this->mstGachaToRarityMapRepository->getMapForGacha($gachaId);
 
         // Variables for the total weight and the percentage spread
         $totalWeight = 0;
@@ -117,7 +93,7 @@ class GachaService
         $cardRarityToUse = $gachaToRarityMap[$indexOfSelectedRarity]['card_rarity'];
 
         // Generate a random card within the pool of that card's rarity
-        $cardArray = $this->rarityToCardMapRepository->getCardsWithRarityLevel($gachaId, $cardRarityToUse);
+        $cardArray = $this->mstRarityToCardMapRepository->getCardsWithRarityLevel($gachaId, $cardRarityToUse);
 
         $totalWeight = 0;
         $cardPercentageWeightArray = array();
