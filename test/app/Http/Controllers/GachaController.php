@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\GachaService;
-use App\Services\UserService;
 // Requests
 use App\Http\Requests\CreateGachaRequest;
 
@@ -14,11 +13,9 @@ class GachaController extends Controller
     private $userService;
 
     public function __construct(
-        GachaService $gachaService,
-        UserService $userService
+        GachaService $gachaService
     ) {
         $this->gachaService = $gachaService;
-        $this->userService = $userService;
     }
 
     public function index()

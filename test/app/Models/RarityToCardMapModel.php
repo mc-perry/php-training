@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Weight list model for gacha items
+ * Model for gacha items data
  */
-class GachaToRarityMapModel extends Model
+class RarityToCardMapModel extends Model
 {
     // Set the table name
-    protected $table = 'gacha_to_rarity_map';
+    protected $table = 'rarity_to_card_map';
 
     // The primary key associated with the table.
     protected $primaryKey = 'id';
@@ -24,7 +24,8 @@ class GachaToRarityMapModel extends Model
      */
     protected $fillable = [
         'gacha_id',
-        'card_rarity',
-        'weight'
+        'rarity_level',
+        'card_id',
+        'card_weight'
     ];
 }

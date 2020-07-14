@@ -36,6 +36,12 @@ class RarityToCardMapSeeder extends Seeder
             ],
             [
                 'gacha_id' => 1,
+                'rarity_level' => 2,
+                'card_id' => 5,
+                'card_weight' => 20,
+            ],
+            [
+                'gacha_id' => 1,
                 'rarity_level' => 3,
                 'card_id' => 1,
                 'card_weight' => 80,

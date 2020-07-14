@@ -24,12 +24,12 @@ class GachaMasterInfoSeeder extends Seeder
             [
                 'gacha_id' => 2,
                 'number_of_cards' => 10,
-                'maximum_rarity' => 2
+                'maximum_rarity' => 3
             ],
             [
                 'gacha_id' => 3,
                 'number_of_cards' => 10,
-                'maximum_rarity' => 2
+                'maximum_rarity' => 4
             ],
         ]);
     }
