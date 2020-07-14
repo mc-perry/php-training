@@ -17,6 +17,6 @@ class GachaToRarityMapRepository
      */
     public function getRarityLevelsForGacha(int $GachaId)
     {
-        return GachaToRarityMapModel::where($)->toArray();
+        return GachaToRarityMapModel::where('gacha_id', $GachaId)->toArray();
     }
 }

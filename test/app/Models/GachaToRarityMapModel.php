@@ -24,6 +24,7 @@ class GachaToRarityMapModel extends Model
      */
     protected $fillable = [
         'gacha_id',
-        'card_rarity'
+        'card_rarity',
+        'card_weight'
     ];
 }
