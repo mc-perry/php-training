@@ -23,13 +23,13 @@ class MstGachaInfoSeeder extends Seeder
             ],
             [
                 'gacha_id' => 2,
-                'number_of_cards' => 10,
-                'maximum_rarity' => 3
+                'number_of_cards' => 5,
+                'maximum_rarity' => 1
             ],
             [
                 'gacha_id' => 3,
-                'number_of_cards' => 10,
-                'maximum_rarity' => 4
+                'number_of_cards' => 20,
+                'maximum_rarity' => 3
             ],
         ]);
     }

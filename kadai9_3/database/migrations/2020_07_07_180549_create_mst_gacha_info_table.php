@@ -14,7 +14,7 @@ class CreateMstGachaInfoTable extends Migration
     public function up()
     {
         Schema::create('mst_gacha_info', function (Blueprint $table) {
-            $table->integer('gacha_id')->comment('Card ID');
+            $table->bigIncrements('gacha_id')->autoIncrement()->comment('Gacha ID');
             $table->integer('number_of_cards')->comment('Number of Cards');
             $table->integer('maximum_rarity')->comment('Maximum Rarity');
         });
