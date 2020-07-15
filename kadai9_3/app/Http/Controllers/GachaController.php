@@ -26,6 +26,7 @@ class GachaController extends Controller
 
     public function createGacha(CreateGachaRequest $request)
     {
+        var_dump("Creating gacha!");
         $gachaResult = $this->gachaService->createGacha($request);
         return response()->json($gachaResult);
     }

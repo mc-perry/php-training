@@ -63,6 +63,21 @@ class GachaService
         return $itemIndex;
     }
 
+    private function generatePctArrayAndAssignIndex($gachaToRarityMap)
+    {
+        // Variables for the total weight and the percentage spread
+        $gachaPercentageWeightArray = array();
+
+        $totalWeight = array_sum(array_column($gachaToRarityMap, 'weight'));
+
+        foreach ($gachaToRarityMap as $rarity_item) {
+            array_push($gachaPercentageWeightArray, $rarity_item['weight'] / $totalWeight);
+        }
+
+        return $this->assignIndexFromPercentageArray($gachaPercentageWeightArray);
+    }
+
+
     /**
      * Create a gacha card
      *
@@ -76,50 +91,28 @@ class GachaService
 
         $gachaToRarityMap = $this->mstGachaToRarityMapRepository->getMapForGacha($gachaId);
 
-        // Variables for the total weight and the percentage spread
-        $totalWeight = 0;
-        $gachaPercentageWeightArray = array();
-
-        foreach ($gachaToRarityMap as $rarity_item) {
-            $totalWeight += $rarity_item['weight'];
-        }
-
-        foreach ($gachaToRarityMap as $rarity_item) {
-            array_push($gachaPercentageWeightArray, $rarity_item['weight'] / $totalWeight);
-        }
-
         // Use function to determine weighted rarity level
-        $indexOfSelectedRarity = $this->assignIndexFromPercentageArray($gachaPercentageWeightArray);
+        $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($gachaToRarityMap);
         $cardRarityToUse = $gachaToRarityMap[$indexOfSelectedRarity]['card_rarity'];
 
         // Generate a random card within the pool of that card's rarity
         $cardArray = $this->mstRarityToCardMapRepository->getCardsWithRarityLevel($gachaId, $cardRarityToUse);
 
-        $totalWeight = 0;
-        $cardPercentageWeightArray = array();
-
-        foreach ($cardArray as $card_item) {
-            $totalWeight += $card_item['singleshot_weight'];
-        }
-
-        foreach ($cardArray as $card_item) {
-            array_push($cardPercentageWeightArray, $card_item['singleshot_weight'] / $totalWeight);
-        }
-
-        // Use function to determine weighted rarity level
-        $indexOfCardToIssue = $this->assignIndexFromPercentageArray($cardPercentageWeightArray);
+        // Can reuse the function to get index of the card to issue
+        $indexOfCardToIssue = $this->generatePctArrayAndAssignIndex($cardArray);
 
         $cardInfo = $cardArray[$indexOfCardToIssue];
         $cardId = $cardInfo['card_id'];
 
         // Add  new to the return object before adding card to the db
-        $cardExists = $this->userGachaCardsRepository->cardExistsForUser($userId, $cardId);
+        $userCardsArray = $this->userGachaCardsRepository->getUserCards($userId);
+        $uniqueIdList = array_unique(array_column($userCardsArray, 'id'));
 
         // Add card to the db
         $addUserCardResponse = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
 
         // Set whether it is a new card
-        $addUserCardResponse['new'] = !$cardExists;
+        $addUserCardResponse['new'] = !array_key_exists($cardId, $uniqueIdList);
         // Add the rarity level to the return object also
         $addUserCardResponse['card_rarity'] = $cardRarityToUse;
 
@@ -145,23 +138,8 @@ class GachaService
         $numOfGachaCards = $masterGachaInfo['number_of_cards'];
         $maximum_rarity = $masterGachaInfo['maximum_rarity'];
 
-        // Variables for the total weight and the percentage spread
-        $totalWeight = 0;
-        $gachaPercentageWeightArray = array();
-
-        // Insert data object array
-        $cardInsertData = array();
-
-        foreach ($gachaToRarityMap as $rarity_item) {
-            $totalWeight += $rarity_item['weight'];
-        }
-
-        foreach ($gachaToRarityMap as $rarity_item) {
-            array_push($gachaPercentageWeightArray, $rarity_item['weight'] / $totalWeight);
-        }
-
         // Use function to determine weighted rarity level
-        $indexOfSelectedRarity = $this->assignIndexFromPercentageArray($gachaPercentageWeightArray);
+        $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($gachaToRarityMap);
         $cardRarityToUse = $gachaToRarityMap[$indexOfSelectedRarity]['card_rarity'];
 
         // Generate a random card within the pool of that card's rarity
@@ -172,11 +150,11 @@ class GachaService
         $returnGachaCardArray = array();
 
         foreach ($cardArray as $card_item) {
-            $totalWeight += $card_item['tentimes_weight'];
+            $totalWeight += $card_item['weight'];
         }
 
         foreach ($cardArray as $card_item) {
-            array_push($cardPercentageWeightArray, $card_item['tentimes_weight'] / $totalWeight);
+            array_push($cardPercentageWeightArray, $card_item['weight'] / $totalWeight);
         }
 
         // Call x times for the first x-1 randomly generated gacha cards

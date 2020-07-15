@@ -38,14 +38,13 @@ class UserGachaCardsRepository
 
 
     /**
-     * Determine if card exists for the given user
+     * Get cards given user id
      *
      * @param int $UserId
-     * @param int $CardId
      * @return bool
      */
-    public function cardExistsForUser(int $UserId, int $CardId)
+    public function getUserCards(int $UserId)
     {
-        return UserGachaCardsModel::query()->where('user_id', $UserId)->where('master_card_id', $CardId)->exists();
+        return UserGachaCardsModel::query()->where('user_id', $UserId)->orderBy('id', 'asc')->get()->toArray();
     }
 }
