@@ -25,6 +25,6 @@ class MstGachaInfoModel extends Model
     protected $fillable = [
         'gacha_id',
         'number_of_cards',
-        'maximum_rarity',
+        'maximum_rarity_lastgacha',
     ];
 }

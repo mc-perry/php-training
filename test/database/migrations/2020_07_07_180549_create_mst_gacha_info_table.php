@@ -16,7 +16,7 @@ class CreateMstGachaInfoTable extends Migration
         Schema::create('mst_gacha_info', function (Blueprint $table) {
             $table->bigIncrements('gacha_id')->autoIncrement()->comment('Gacha ID');
             $table->integer('number_of_cards')->comment('Number of Cards');
-            $table->integer('maximum_rarity')->comment('Maximum Rarity');
+            $table->integer('maximum_rarity_lastgacha')->comment('Maximum Rarity of Last Gacha');
         });
     }
 

@@ -27,6 +27,16 @@ class MstGachaToRarityMapSeeder extends Seeder
                 'weight' => 40
             ],
             [
+                'gacha_id' => 1,
+                'card_rarity' => 3,
+                'weight' => 60
+            ],
+            [
+                'gacha_id' => 2,
+                'card_rarity' => 1,
+                'weight' => 60
+            ],
+            [
                 'gacha_id' => 2,
                 'card_rarity' => 2,
                 'weight' => 30
@@ -34,7 +44,7 @@ class MstGachaToRarityMapSeeder extends Seeder
             [
                 'gacha_id' => 2,
                 'card_rarity' => 3,
-                'weight' => 60
+                'weight' => 20
             ],
             [
                 'gacha_id' => 3,

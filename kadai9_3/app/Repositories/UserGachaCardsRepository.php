@@ -45,6 +45,6 @@ class UserGachaCardsRepository
      */
     public function getUserCards(int $UserId)
     {
-        return UserGachaCardsModel::query()->where('user_id', $UserId)->orderBy('id', 'asc')->get()->toArray();
+        return UserGachaCardsModel::query()->where('user_id', $UserId)->orderBy('id', 'ASC')->get()->toArray();
     }
 }

@@ -19,4 +19,15 @@ class MstGachaToRarityMapRepository
     {
         return MstGachaToRarityMapModel::where('gacha_id', $GachaId)->get()->toArray();
     }
+
+    /**
+     * Get list of rarity levels for gacha
+     *
+     * @param $GachaId
+     * @return object
+     */
+    public function getMaximumRarityForGacha($GachaId)
+    { 
+        return MstGachaToRarityMapModel::where('gacha_id', $GachaId)->orderBy('card_rarity', 'DESC')->first()->toArray();
+    }
 }
