@@ -11,6 +11,17 @@ use App\Models\MstRarityToCardMapModel;
 class MstRarityToCardMapRepository
 {
     /**
+     * Get all rarity to card mappings
+     *
+     * @return Array
+     */
+    public function getAllRarityToCardMappings()
+    {
+        return MstRarityToCardMapModel::all()->toArray();
+    }
+
+
+    /**
      * Get all cards with given rarity level
      *
      * @return Array

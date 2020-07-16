@@ -138,18 +138,23 @@ class GachaService
         $numOfGachaCards = $masterGachaInfo['number_of_cards'];
         $maximum_rarity = $masterGachaInfo['maximum_rarity_lastgacha'];
 
-        // Use function to determine weighted rarity level
-        $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($gachaToRarityMap);
-        $cardRarityToUse = $gachaToRarityMap[$indexOfSelectedRarity]['card_rarity'];
-
         // Get the maximum rarity of the given gacha
         $numOfRarities = $this->mstGachaToRarityMapRepository->getMaximumRarityForGacha($gachaId)['card_rarity'];
-        var_dump($numOfRarities);
-        // Generate a random card within the pool of that card's rarity
-        $cardArray = $this->mstRarityToCardMapRepository->getCardsWithRarityLevel($gachaId, $cardRarityToUse);
 
+        // Arrays for return object and database insert object respectively
         $returnGachaCardArray = array();
         $cardInsertData = array();
+        $allRarityToCardMappings = $this->mstRarityToCardMapRepository->getAllRarityToCardMappings();
+
+        $rarityToCardMappingArray = array();
+        for ($x = 1; $x <= $numOfRarities; $x++) {
+            array_push($rarityToCardMappingArray, array());
+            foreach ($allRarityToCardMappings as $rarityMapping) {
+                if ($rarityMapping['rarity_level'] == $x && $rarityMapping['gacha_id'] == $gachaId) {
+                    array_push($rarityToCardMappingArray[$x - 1], $rarityMapping);
+                }
+            }
+        }
 
         // Add  new to the return object before adding card to the db
         $userCardsArray = $this->userGachaCardsRepository->getUserCards($userId);
@@ -160,9 +165,17 @@ class GachaService
             $uniqueIdList = array_unique(array_column($userCardsArray, 'master_card_id'));
 
             // Use function to determine weighted rarity level
-            $indexOfCardToIssue = $this->generatePctArrayAndAssignIndex($cardArray);
+            $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($gachaToRarityMap);
 
-            $cardInfo = $cardArray[$indexOfCardToIssue];
+            $cardRarityToUse = $gachaToRarityMap[$indexOfSelectedRarity]['card_rarity'];
+
+            // Get the weight mapping of cards for the selected rarity
+            $rarityMapForSelectedRarity = $rarityToCardMappingArray[$cardRarityToUse - 1];
+
+            // Use function to determine weighted rarity level
+            $indexOfCardToIssue = $this->generatePctArrayAndAssignIndex($rarityMapForSelectedRarity);
+
+            $cardInfo = $rarityMapForSelectedRarity[$indexOfCardToIssue];
             $cardId = $cardInfo['card_id'];
 
             // Add the data to the object to be inserted and also user cards (for new)
@@ -193,16 +206,13 @@ class GachaService
 
         // Add the cards to the db
         $this->userGachaCardsRepository->addCardsToUserTableFromArray($cardInsertData);
-        // Add the last issued card to the db
-        $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardIdToIssue);
 
         // Add  new to the return object before adding card to the db
         $userCardsArray = $this->userGachaCardsRepository->getUserCards($userId);
         $uniqueIdList = array_unique(array_column($userCardsArray, 'master_card_id'));
-
+        var_dump($uniqueIdList);
         // Set whether it is a new card
-        $gachaCard['new'] = !in_array($cardId, $uniqueIdList);
-
+        $gachaCard['new'] = !in_array($cardIdToIssue, $uniqueIdList);
         // Set the card_id of the last card on the return object
         $gachaCard['master_card_id'] = $cardIdToIssue;
         // Add the rarity level to the return object also
@@ -211,6 +221,9 @@ class GachaService
         $gachaCard['user_id'] = $userId;
 
         array_push($returnGachaCardArray, $gachaCard);
+
+        // Add the last issued card to the db
+        $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardIdToIssue);
 
         return $returnGachaCardArray;
     }
