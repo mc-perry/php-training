@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Weightlist Repository
+ * 重み付けリポジトリ
  */
 
 namespace App\Repositories;
@@ -11,7 +11,7 @@ use App\Models\MstGachaInfoModel;
 class MstGachaInfoRepository
 {
     /**
-     * Get single gacha weightlist
+     * シングルガチャウェイトリストを取得
      *
      * @return object
      */

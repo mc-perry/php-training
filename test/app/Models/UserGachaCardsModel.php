@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * ユーザーカードのモデル
+ */
+
 class UserGachaCardsModel extends Model
 {
     // Set the table name

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Weight list model for gacha items
+ * ガチャアイテムの重み付け
  */
 class MstGachaInfoModel extends Model
 {

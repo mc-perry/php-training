@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Gacha Service
+ * ガチャサービス
  */
 
 namespace App\Services;
 
-use App\Facades\Error;
-use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateGachaRequest;
 // Repositories
 use App\Repositories\MstCardDataRepository;
@@ -38,34 +36,34 @@ class GachaService
         $this->userGachaCardsRepository = $userGachaCardsRepository;
     }
 
-    /** Helper functions */
+    /** ヘルパー関数 */
 
     private function assignIndexFromPercentageArray($percentageWeightArray)
     {
-        // Generates a random number between 0 and 1
+        // 0と1の間の乱数を生成します
         $randNum = mt_rand() / mt_getrandmax();
 
         $cumulativeWeight = 0;
         $itemIndex = 0;
 
-        // Assign the rarity level based on the database value
+        // データベースの値に基づいて希少性レベルを割り当てる
         foreach ($percentageWeightArray as $percentageWeight) {
             if ($randNum >= $cumulativeWeight && $randNum < $cumulativeWeight + $percentageWeight) {
                 return $itemIndex;
             }
-            // Increment the weight
+            // 体重を増やす
             $cumulativeWeight = $cumulativeWeight + $percentageWeight;
-            // Increment the counter
+            // カウンターをインクリメントする
             $itemIndex++;
         }
 
-        // If for some reason no rarity level was assigned, assign first
+        // 何らかの理由でレアリティレベルが割り当てられていない場合は、最初に割り当てます
         return $itemIndex;
     }
 
     private function generatePctArrayAndAssignIndex($gachaToRarityMap)
     {
-        // Variables for the total weight and the percentage spread
+        // 総重量と割合のばらつきの変数
         $gachaPercentageWeightArray = array();
 
         $totalWeight = array_sum(array_column($gachaToRarityMap, 'weight'));
@@ -79,7 +77,7 @@ class GachaService
 
 
     /**
-     * Create a gacha card
+     * ガチャカードを作成する
      *
      * @param CreateGachaRequest $request
      * @return object
@@ -91,36 +89,36 @@ class GachaService
 
         $gachaToRarityMap = $this->mstGachaToRarityMapRepository->getMapForGacha($gachaId);
 
-        // Use function to determine weighted rarity level
+        // 関数を使用して重み付き希少性レベルを決定する
         $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($gachaToRarityMap);
         $cardRarityToUse = $gachaToRarityMap[$indexOfSelectedRarity]['card_rarity'];
 
-        // Generate a random card within the pool of that card's rarity
+        // そのカードの希少性のプール内でランダムなカードを生成します
         $cardArray = $this->mstRarityToCardMapRepository->getCardsWithRarityLevel($gachaId, $cardRarityToUse);
 
-        // Can reuse the function to get index of the card to issue
+        // 関数を再利用して、発行するカードのインデックスを取得できます
         $indexOfCardToIssue = $this->generatePctArrayAndAssignIndex($cardArray);
 
         $cardInfo = $cardArray[$indexOfCardToIssue];
         $cardId = $cardInfo['card_id'];
 
-        // Add  new to the return object before adding card to the db
+        // カードをデータベースに追加する前に、returnオブジェクトにnewを追加します
         $userCardsArray = $this->userGachaCardsRepository->getUserCards($userId);
         $uniqueIdList = array_unique(array_column($userCardsArray, 'master_card_id'));
 
-        // Add card to the db
+        // カードをデータベースに追加
         $addUserCardResponse = $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardId);
 
-        // Set whether it is a new card
+        // 新しいカードかどうかを設定します
         $addUserCardResponse['new'] = !in_array($cardId, $uniqueIdList);
-        // Add the rarity level to the return object also
+        // 希少性レベルを返却オブジェクトにも追加します
         $addUserCardResponse['card_rarity'] = $cardRarityToUse;
 
         return $addUserCardResponse;
     }
 
     /**
-     * Create consecutive gacha cards
+     * 連続したガチャカードを作成する
      *
      * @param CreateGachaRequest $request
      * @return object
@@ -130,18 +128,18 @@ class GachaService
         $userId = intval($request->user_id);
         $gachaId = intval($request->gacha_id);
 
-        // Get the weights of gacha to card rarities
+        // カードのレア度にガチャの重みを加える
         $gachaToRarityMap = $this->mstGachaToRarityMapRepository->getMapForGacha($gachaId);
-        // Get the number of cards to be issued to user
+        // ユーザーに発行されるカードの数を取得します
         $masterGachaInfo = $this->mstGachaInfoRepository->getGachaMasterInfo($gachaId);
 
         $numOfGachaCards = $masterGachaInfo['number_of_cards'];
         $minimum_rarity_lastgacha = $masterGachaInfo['minimum_rarity_lastgacha'];
 
-        // Get the maximum rarity of the given gacha
+        // 指定されたガチャの最大の希少性を取得します
         $numOfRarities = $this->mstGachaToRarityMapRepository->getMaximumRarityForGacha($gachaId)['card_rarity'];
 
-        // Arrays for return object and database insert object respectively
+        // 戻りオブジェクトとデータベース挿入オブジェクトの配列
         $returnGachaCardArray = array();
         $cardInsertData = array();
         $allRarityToCardMappings = $this->mstRarityToCardMapRepository->getAllRarityToCardMappings();
@@ -156,73 +154,72 @@ class GachaService
             }
         }
 
-        // Add  new to the return object before adding card to the db
+        // カードをデータベースに追加する前に、returnオブジェクトにnewを追加します
         $userCardsArray = $this->userGachaCardsRepository->getUserCards($userId);
 
-        // Call x times for the first x-1 randomly generated gacha cards
+        // 最初に合計1個のランダムに生成されたガチャカードを要求する
         for ($i = 0; $i < $numOfGachaCards - 1; $i++) {
-            // Have to generate this each time to update the new value correctly
+            // 新しい値を正しく更新するには、毎回これを生成する必要があります
             $uniqueIdList = array_unique(array_column($userCardsArray, 'master_card_id'));
 
-            // Use function to determine weighted rarity level
+            // 関数を使用して重み付き希少性レベルを決定する
             $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($gachaToRarityMap);
 
             $cardRarityToUse = $gachaToRarityMap[$indexOfSelectedRarity]['card_rarity'];
 
-            // Get the weight mapping of cards for the selected rarity
+            // 選択したレアリティのカードのウェイトマッピングを取得します
             $rarityMapForSelectedRarity = $rarityToCardMappingArray[$cardRarityToUse - 1];
 
-            // Use function to determine weighted rarity level
+            // 関数を使用して重み付き希少性レベルを決定する
             $indexOfCardToIssue = $this->generatePctArrayAndAssignIndex($rarityMapForSelectedRarity);
 
             $cardInfo = $rarityMapForSelectedRarity[$indexOfCardToIssue];
             $cardId = $cardInfo['card_id'];
 
-            // Add the data to the object to be inserted and also user cards (for new)
+            // 挿入するオブジェクトとユーザーカード（新規）にデータを追加します
             array_push($cardInsertData, ['user_id' => $userId, 'master_card_id' => $cardId]);
             array_push($userCardsArray, ['user_id' => $userId, 'master_card_id' => $cardId]);
 
-            // Add the card id to the return object
+            // カードIDを戻りオブジェクトに追加する
             $gachaCard['master_card_id'] = $cardId;
-            // Set new value based on current status
+            // 現在のステータスに基づいて新しい値を設定します
             $gachaCard['new'] = !in_array($cardId, $uniqueIdList);
-            // Add the rarity level to the return object
+            // 希少性レベルを戻りオブジェクトに追加します
             $gachaCard['rarity'] = $cardRarityToUse;
-            // Add the user_id to the return object
+            // user_idを戻りオブジェクトに追加します
             $gachaCard['user_id'] = $userId;
 
             array_push($returnGachaCardArray, $gachaCard);
         }
 
-        // Generate one more gacha card for rare rarity or higher
-
-        // Calculate new total weight for rare categories
+        // レアレア以上のガチャカードをもう1枚生成する
+        // 珍しいカテゴリーの新しい総重量を計算する
         $cardsOfRarityOrAbove = $this->mstRarityToCardMapRepository->getCardsWithRarityLevelOrAbove($gachaId, $minimum_rarity_lastgacha);
 
-        // Use function to determine weighted rarity level
+        // 関数を使用して重み付き希少性レベルを決定する
         $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($cardsOfRarityOrAbove);
         $cardIdToIssue = $cardsOfRarityOrAbove[$indexOfSelectedRarity]['card_id'];
         $rarityOfIssuedCard = $cardsOfRarityOrAbove[$indexOfSelectedRarity]['rarity_level'];
 
-        // Add the cards to the db
+        // カードをdbに追加する
         $this->userGachaCardsRepository->addCardsToUserTableFromArray($cardInsertData);
 
-        // Add  new to the return object before adding card to the db
+        // カードをデータベースに追加する前に、returnオブジェクトにnewを追加します
         $userCardsArray = $this->userGachaCardsRepository->getUserCards($userId);
         $uniqueIdList = array_unique(array_column($userCardsArray, 'master_card_id'));
 
-        // Set whether it is a new card
+        // 新しいカードかどうかを設定します
         $gachaCard['new'] = !in_array($cardIdToIssue, $uniqueIdList);
-        // Set the card_id of the last card on the return object
+        // 返却オブジェクトの最後のカードのcard_idを設定します
         $gachaCard['master_card_id'] = $cardIdToIssue;
-        // Add the rarity level to the return object also
+        // 希少性レベルを返却オブジェクトにも追加します
         $gachaCard['rarity'] = $rarityOfIssuedCard;
-        // Set this cards user_id
+        // このカードのuser_idを設定
         $gachaCard['user_id'] = $userId;
 
         array_push($returnGachaCardArray, $gachaCard);
 
-        // Add the last issued card to the db
+        // 最後に発行されたカードをデータベースに追加します
         $this->userGachaCardsRepository->addSelectedCardToUserTable($userId, $cardIdToIssue);
 
         return $returnGachaCardArray;

@@ -20,8 +20,6 @@ class GachaController extends Controller
 
     public function index()
     {
-        // $users = $this->userService->getAllUsers();
-        // return view('gachagame.index')->with('users', $users);
     }
 
     public function createGacha(CreateGachaRequest $request)

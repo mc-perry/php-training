@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Weightlist Repository
+ * ガチャをレアにマップのリポジトリ
  */
 
 namespace App\Repositories;
@@ -21,7 +21,7 @@ class MstGachaToRarityMapRepository
     }
 
     /**
-     * Get list of rarity levels for gacha
+     * 指定のガチャの最大レアリティレベルを取得します
      *
      * @param $GachaId
      * @return object

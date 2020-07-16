@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     /**
-     * Create a user
+     * ユーザーを作成する
      *
      * @param UserCreateRequest $request
      * @return JsonResponse
@@ -35,7 +35,7 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         $loginResponse = $this->userService->assignTokenToUser($request->id);
-        // Login error is handled in service, so return response if returned
+        // ログインエラーはサービスで処理されるため、返された場合は応答を返します
         return $loginResponse;
     }
 
@@ -52,7 +52,7 @@ class UserController extends Controller
         if ($this->userService->getUserByUserID($request->id) === null) {
             Error::handleError("100011");
         }
-        // Handle all of the database operations in a transaction
+        // トランザクションですべてのデータベース操作を処理する
         $gameoverResponse = $this->userService->incrementExperienceUpdateLevelAndRanking($request->id, $request->exp);
         return response()->json(['data' => $gameoverResponse], 200);
     }

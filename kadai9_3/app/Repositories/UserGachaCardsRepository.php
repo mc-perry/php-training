@@ -1,19 +1,17 @@
 <?php
 
 /**
- * User Gacha Cards
+ * ユーザーガチャカード
  */
 
 namespace App\Repositories;
 
-use App\Http\Resources\User;
 use App\Models\UserGachaCardsModel;
-use App\Facades\Error;
 
 class UserGachaCardsRepository
 {
     /**
-     * Add selected card to users cards if new
+     * 新規の場合、選択したカードをユーザーカードに追加
      *
      * @param int $UserId
      * @param int $CardId
@@ -26,7 +24,7 @@ class UserGachaCardsRepository
     }
 
     /**
-     * Add array of cards to users cards
+     * カードの配列をユーザーカードに追加する
      *
      * @param array $CardsToInsert
      * @return bool
@@ -38,7 +36,7 @@ class UserGachaCardsRepository
 
 
     /**
-     * Get cards given user id
+     * ユーザーIDを指定してカードを取得する
      *
      * @param int $UserId
      * @return array

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rarity To Card Map Repository
+ * カードマップへのレアリティのリポジトリ
  */
 
 namespace App\Repositories;
@@ -11,7 +11,7 @@ use App\Models\MstRarityToCardMapModel;
 class MstRarityToCardMapRepository
 {
     /**
-     * Get all rarity to card mappings
+     * レアリティをカードにマッピングを全て取得
      *
      * @return Array
      */
@@ -22,7 +22,7 @@ class MstRarityToCardMapRepository
 
 
     /**
-     * Get all cards with given rarity level
+     * 指定のレアリティレベルのすべてのカードを入手する
      *
      * @return Array
      */
@@ -32,7 +32,7 @@ class MstRarityToCardMapRepository
     }
 
     /**
-     * Get all cards with given rarity level or rarer (index high=rare)
+     * 指定のレア度レベルまたはレア度のすべてのカードを取得します（インデックス高=レア）
      *
      * @return Array
      */

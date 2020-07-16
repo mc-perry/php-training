@@ -34,7 +34,7 @@ class UserRepository
 
 
     /**
-     * Get user object with specified id and token
+     * 指定されたIDとトークンを持つユーザーオブジェクトを取得する
      *
      * @param int $UserId
      * @param string $Token
@@ -59,7 +59,7 @@ class UserRepository
     }
 
     /**
-     * Assign a token to a user
+     * トークンをユーザーに割り当てる
      *
      * @param array $params
      * @return User
@@ -70,7 +70,7 @@ class UserRepository
     }
 
     /**
-     * Get the exp value for a given user by id
+     * IDで指定されたユーザーのexp値を取得します
      *
      * @param array $params
      * @return integer containing value of exp for given user if exists
@@ -81,7 +81,7 @@ class UserRepository
     }
 
     /**
-     * Get the exp value for a given user by id
+     * IDで指定されたユーザーのexp値を取得します
      *
      * @param array $params
      * @return integer containing value of exp for given user if exists
@@ -92,7 +92,7 @@ class UserRepository
     }
 
     /**
-     * Get the exp value for a given user by id
+     * IDで指定されたユーザーのexp値を取得します
      *
      * @param array $params
      * @return integer containing value of exp for given user if exists

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Model for gacha items data
+ * ガチャアイテムデータのモデル
  */
 class MstRarityToCardMapModel extends Model
 {

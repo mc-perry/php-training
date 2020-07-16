@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Gacha Master Data Repository
+ * ガチャマスターデータリポジトリ
  */
 
 namespace App\Repositories;
@@ -11,7 +11,7 @@ use App\Models\MstCardDataModel;
 class MstCardDataRepository
 {
     /**
-     * Get all cards with given rarity level
+     * 指定のレアリティレベルのすべてのカードを入手する
      *
      * @return Array
      */

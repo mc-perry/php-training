@@ -11,7 +11,7 @@ use App\Models\MaintenanceModel;
 class MaintenanceRepository
 {
     /**
-     * Return the maintenance window
+     * メンテナンスウィンドウを戻す
      *
      * @param int $TimeValue
      * @return User
