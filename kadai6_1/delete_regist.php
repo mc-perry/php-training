@@ -21,7 +21,6 @@
     foreach ($delete_data as $data) {
         $exploded = explode("/", $data);
         $dataRow = $my_db->selectByZip($exploded[0], $exploded[1], $exploded[2], $table_name);
-
         mysqli_begin_transaction($my_db->db, MYSQLI_TRANS_START_READ_WRITE);
         if ($my_db->delete($exploded[0], $exploded[1], $exploded[2], $table_name)) {
             if ($insertResult = $my_db->insert($backup_table_name, $my_db->mapFieldsToArray($dataRow))) {

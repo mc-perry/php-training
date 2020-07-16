@@ -7,21 +7,21 @@
 
     function clear_session_fields()
     {
-      $_SESSION["public_group_code"] = null;
-      $_SESSION["zip_code_old"] = null;
-      $_SESSION["zip_code"] = null;
-      $_SESSION["prefecture_kana"] = null;
-      $_SESSION["city_kana"] = null;
-      $_SESSION["town_kana"] = null;
-      $_SESSION["prefecture"] = null;
-      $_SESSION["city"] = null;
-      $_SESSION["town"] = null;
-      $_SESSION["town_double_zip_code"] = null;
-      $_SESSION["town_multi_address"] = null;
-      $_SESSION["town_attach_district"] = null;
-      $_SESSION["zip_code_multi_town"] = null;
-      $_SESSION["update_check"] = null;
-      $_SESSION["update_reason"] = null;    
+        $_SESSION["public_group_code"] = null;
+        $_SESSION["zip_code_old"] = null;
+        $_SESSION["zip_code"] = null;
+        $_SESSION["prefecture_kana"] = null;
+        $_SESSION["city_kana"] = null;
+        $_SESSION["town_kana"] = null;
+        $_SESSION["prefecture"] = null;
+        $_SESSION["city"] = null;
+        $_SESSION["town"] = null;
+        $_SESSION["town_double_zip_code"] = null;
+        $_SESSION["town_multi_address"] = null;
+        $_SESSION["town_attach_district"] = null;
+        $_SESSION["zip_code_multi_town"] = null;
+        $_SESSION["update_check"] = null;
+        $_SESSION["update_reason"] = null;    
     }
 
     $submission_data = array();
@@ -40,11 +40,14 @@
     array_push($submission_data, $_POST["zip_code_multi_town"]);
     array_push($submission_data, $_POST["update_check"]);
     array_push($submission_data, $_POST["update_reason"]);
-    
+    $oldPublicGroupCode = $_POST['old_public_group_code'];
+    $oldZipCodeOld = $_POST['old_zip_code_old'];
+    $oldZipArray = array($oldPublicGroupCode, $oldZipCodeOld);
 
     // Check for the submission data to set blue success text
-    if ($_SESSION["submitting"] == true) {
+    if ($_SESSION["updating"] == true) {
         $my_db = new MyDBControllerMySQL();
+        $my_db->console_log($oldPublicGroupCode);
         // Connect again after insert if it occurred
         $my_db->connect();
 
@@ -60,17 +63,18 @@
         }
 
         // Submit the data
-        $data_inserted = $my_db->insert($table_name, $submission_data);
-        if ($data_inserted == true) {
-            $_SESSION["submit_success"] = true;
+        $data_updated = $my_db->update($table_name, $submission_data, $oldZipArray);
+        $my_db->console_log($data_updated);
+        if ($data_updated == true) {
+            $_SESSION["update_success"] = true;
         } else {
-            $_SESSION["submit_success"] = false;
+            $_SESSION["update_success"] = false;
         }
         $_SESSION["submission_data"] = null;
-        $_SESSION["submitting"] = false;
+        $_SESSION["updating"] = false;
         clear_session_fields();
         // Set submitted value to use in index page
-        $_SESSION["submitted"] = true;
+        $_SESSION["updated"] = true;
         // Set input bool to not display errors at first
         $_SESSION["input_hajimete"] = true;
         // Redirect to the list page

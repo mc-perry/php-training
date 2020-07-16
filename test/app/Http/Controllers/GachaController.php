@@ -15,19 +15,17 @@ class GachaController extends Controller
     public function __construct(
         GachaService $gachaService
     ) {
-        var_dump("Gacha Controller created!");
         $this->gachaService = $gachaService;
     }
 
     public function index()
     {
-        $users = $this->userService->getAllUsers();
-        return view('gachagame.index')->with('users', $users);
+        // $users = $this->userService->getAllUsers();
+        // return view('gachagame.index')->with('users', $users);
     }
 
     public function createGacha(CreateGachaRequest $request)
     {
-        var_dump("Creating gacha!");
         $gachaResult = $this->gachaService->createGacha($request);
         return response()->json($gachaResult);
     }

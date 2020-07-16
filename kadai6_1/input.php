@@ -35,7 +35,7 @@
     $my_db->connect();
     $comment_table_query = 
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
-    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null, null, null);
 
     $_SESSION["comment_table_fields"] = $comment_table_fields;
 
@@ -43,9 +43,6 @@
     $missing_errors = $_SESSION["error_data"][0];
     $format_errors = $_SESSION["error_data"][1];
     
-    $my_db->console_log($missing_errors);
-    $my_db->console_log($format_errors);
-
     // Close database connection
     $my_db->close();
 
@@ -57,17 +54,30 @@
     $cityKana = $_SESSION["submission_data"][4];
     $townKana = $_SESSION["submission_data"][5];
     $prefecture = $_SESSION["submission_data"][6];
-    $my_db->console_log($prefecture);
     $city = $_SESSION["submission_data"][7];
     $town = $_SESSION["submission_data"][8];
+    // Set gaitou as default for the 4 fields
     if ($townDoubleZipCode) {
         $townDoubleZipCode = $_SESSION["submission_data"][9];
     } else {
-        $townDoubleZipCode = 0;
+        $townDoubleZipCode = 1;
     }
-    $townMultiAddress = $_SESSION["submission_data"][10];
-    $townAttachDistrict = $_SESSION["submission_data"][11];
-    $zipCodeMultiTown = $_SESSION["submission_data"][12];
+    if ($townMultiAddress) {
+        $townMultiAddress = $_SESSION["submission_data"][10];
+    } else {
+        $townMultiAddress = 1;
+    }
+    if ($townAttachDistrict) {
+        $townAttachDistrict = $_SESSION["submission_data"][11];
+    } else {
+        $townAttachDistrict = 1;
+    }
+    if ($zipCodeMultiTown) {
+        $zipCodeMultiTown = $_SESSION["submission_data"][12];
+    } else {
+        $zipCodeMultiTown = 1;
+    }
+
     $updateCheck = $_SESSION["submission_data"][13];
     $updateReason = $_SESSION["submission_data"][14];
 
@@ -76,10 +86,6 @@
     $prefectureKanaErr = $cityKanaErr = $townKanaErr = $prefectureErr = $cityErr = $townErr = "";
     $_SESSION["has_errors"] = false;
 
-    // For now just log a message for errors
-    if ($hasErrors) {
-        console_log("There are errors!");
-    }
 
 ?>
 
@@ -149,20 +155,20 @@
             <?php echo $comment_table_fields[8] ?>: <input name="town" id="town" value="<?php print htmlspecialchars($town, ENT_COMPAT, 'utf-8'); ?>">
             <br />
             <?php echo $comment_table_fields[9] ?><select name="town_double_zip_code" id="town_double_zip_code" size="1">
-                <option value="0" <?php if($townDoubleZipCode == 0) print 'selected' ?>> 該当</option>
-                <option value="1" <?php if($townDoubleZipCode == 1) print 'selected' ?>> 該当せず</option>
+                <option value="1" <?php if($townDoubleZipCode == 1) print 'selected' ?>> 該当</option>
+                <option value="0" <?php if($townDoubleZipCode == 0) print 'selected' ?>> 該当せず</option>
             </select><br />
             <?php echo $comment_table_fields[10] ?><select name="town_multi_address" id="town_multi_address" size="1">
-                <option value="0" <?php if($townMultiAddress == 0) print 'selected' ?>> 該当</option>
-                <option value="1" <?php if($townMultiAddress == 1) print 'selected' ?>> 該当せず</option>
+                <option value="1" <?php if($townMultiAddress == 1) print 'selected' ?>> 該当</option>
+                <option value="0" <?php if($townMultiAddress == 0) print 'selected' ?>> 該当せず</option>
             </select><br />
             <?php echo $comment_table_fields[11] ?><select name="town_attach_district" id="town_attach_district" size="1">
-                <option value="0" <?php if($townAttachDistrict == 0) print 'selected' ?>> 該当</option>
-                <option value="1" <?php if($townAttachDistrict == 1) print 'selected' ?>> 該当せず</option>
+                <option value="1" <?php if($townAttachDistrict == 1) print 'selected' ?>> 該当</option>
+                <option value="0" <?php if($townAttachDistrict == 0) print 'selected' ?>> 該当せず</option>
             </select><br />
                 <?php echo $comment_table_fields[12] ?><select name="zip_code_multi_town" id="zip_code_multi_town" size="1">
-                <option value="0" <?php if($zipCodeMultiTown == 0) print 'selected' ?>> 該当</option>
-                <option value="1" <?php if($zipCodeMultiTown == 1) print 'selected' ?>> 該当せず</option>
+                <option value="1" <?php if($zipCodeMultiTown == 1) print 'selected' ?>> 該当</option>
+                <option value="0" <?php if($zipCodeMultiTown == 0) print 'selected' ?>> 該当せず</option>
             </select><br />
             <?php echo $comment_table_fields[13] ?><select name="update_check" id="update_check" size="1">
                 <option value="0" <?php if($updateCheck == 0) print 'selected' ?>> 変更なし</option>

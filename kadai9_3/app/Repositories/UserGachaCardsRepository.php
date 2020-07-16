@@ -41,7 +41,7 @@ class UserGachaCardsRepository
      * Get cards given user id
      *
      * @param int $UserId
-     * @return bool
+     * @return array
      */
     public function getUserCards(int $UserId)
     {

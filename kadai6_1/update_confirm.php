@@ -13,7 +13,7 @@
     $column_names = $my_db->column_names;
 
     $comment_table_query = "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
-    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null, null, null);
 
     // Set value for update first time
     $_SESSION["update_hajimete"] = false;

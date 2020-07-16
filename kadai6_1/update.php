@@ -43,13 +43,12 @@
     $comment_table_query = "SHOW FULL COLUMNS FROM $table_name";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM $table_name";
-    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null, null, null);
 
     // If coming from a GET request
     if ($run_select_query) {
         $postal_row_data = $my_db->selectByZip($publicGroupCode, $zipCodeOld, $zipCode, $table_name);
         $postal_row = $postal_row_data[0];
-        $my_db->console_log($postal_row);
         // Close database connection
         $my_db->close();
     } else {
@@ -79,7 +78,6 @@
     if ($_SESSION["error_data"] != null) {
         $missing_errors = $_SESSION["error_data"][0];
         $format_errors = $_SESSION["error_data"][1];
-        $my_db->console_log($missing_errors);
     }
 ?>
 
