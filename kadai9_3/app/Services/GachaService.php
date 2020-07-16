@@ -136,7 +136,7 @@ class GachaService
         $masterGachaInfo = $this->mstGachaInfoRepository->getGachaMasterInfo($gachaId);
 
         $numOfGachaCards = $masterGachaInfo['number_of_cards'];
-        $maximum_rarity = $masterGachaInfo['maximum_rarity_lastgacha'];
+        $minimum_rarity_lastgacha = $masterGachaInfo['minimum_rarity_lastgacha'];
 
         // Get the maximum rarity of the given gacha
         $numOfRarities = $this->mstGachaToRarityMapRepository->getMaximumRarityForGacha($gachaId)['card_rarity'];
@@ -197,7 +197,7 @@ class GachaService
         // Generate one more gacha card for rare rarity or higher
 
         // Calculate new total weight for rare categories
-        $cardsOfRarityOrAbove = $this->mstRarityToCardMapRepository->getCardsWithRarityLevelOrAbove($gachaId, $maximum_rarity);
+        $cardsOfRarityOrAbove = $this->mstRarityToCardMapRepository->getCardsWithRarityLevelOrAbove($gachaId, $minimum_rarity_lastgacha);
 
         // Use function to determine weighted rarity level
         $indexOfSelectedRarity = $this->generatePctArrayAndAssignIndex($cardsOfRarityOrAbove);

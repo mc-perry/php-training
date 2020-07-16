@@ -32,12 +32,12 @@ class MstRarityToCardMapRepository
     }
 
     /**
-     * Get all cards with given rarity level
+     * Get all cards with given rarity level or rarer (index high=rare)
      *
      * @return Array
      */
     public function getCardsWithRarityLevelOrAbove(int $GachaId, int $rarityLevel)
     {
-        return MstRarityToCardMapModel::where('gacha_id', $GachaId)->where('rarity_level', "<=", $rarityLevel)->get()->toArray();
+        return MstRarityToCardMapModel::where('gacha_id', $GachaId)->where('rarity_level', ">=", $rarityLevel)->get()->toArray();
     }
 }
