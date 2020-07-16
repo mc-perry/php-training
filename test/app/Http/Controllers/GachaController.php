@@ -15,6 +15,7 @@ class GachaController extends Controller
     public function __construct(
         GachaService $gachaService
     ) {
+        var_dump("Gacha Controller created!");
         $this->gachaService = $gachaService;
     }
 

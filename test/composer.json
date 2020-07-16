@@ -15,7 +15,7 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "predis/predis": "^1.1",
-        "schickling/backup": "^0.6.0"
+        "spatie/laravel-backup": "^6.11"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -27,7 +27,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        }
     },
     "extra": {
         "laravel": {
