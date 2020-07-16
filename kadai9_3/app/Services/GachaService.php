@@ -51,7 +51,7 @@ class GachaService
             if ($randNum >= $cumulativeWeight && $randNum < $cumulativeWeight + $percentageWeight) {
                 return $itemIndex;
             }
-            // 体重を増やす
+            // 重み付けを増やす
             $cumulativeWeight = $cumulativeWeight + $percentageWeight;
             // カウンターをインクリメントする
             $itemIndex++;
@@ -192,7 +192,7 @@ class GachaService
             array_push($returnGachaCardArray, $gachaCard);
         }
 
-        // レアレア以上のガチャカードをもう1枚生成する
+        // レア以上のガチャカードをもう1枚生成する
         // 珍しいカテゴリーの新しい総重量を計算する
         $cardsOfRarityOrAbove = $this->mstRarityToCardMapRepository->getCardsWithRarityLevelOrAbove($gachaId, $minimum_rarity_lastgacha);
 
