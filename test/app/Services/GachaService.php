@@ -210,7 +210,7 @@ class GachaService
         // Add  new to the return object before adding card to the db
         $userCardsArray = $this->userGachaCardsRepository->getUserCards($userId);
         $uniqueIdList = array_unique(array_column($userCardsArray, 'master_card_id'));
-        var_dump($uniqueIdList);
+
         // Set whether it is a new card
         $gachaCard['new'] = !in_array($cardIdToIssue, $uniqueIdList);
         // Set the card_id of the last card on the return object
