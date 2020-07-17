@@ -15,6 +15,8 @@ class JonathanBatchTest extends Migration
     {
         Schema::create('jonathan_batch_test', function (Blueprint $table) {
             $table->bigIncrements('id')->autoIncrement()->comment('ID');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->timestamp('created_at')->comment('Created At');
         });
     }

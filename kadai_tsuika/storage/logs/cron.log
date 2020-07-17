@@ -1,0 +1,145 @@
+string(26) "Handling insert batch data"
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'field list' (SQL: insert into `user_gacha_cards` (`email`, `first_name`, `last_name`) values (john.doe@gmail.com, Jonathan, Doe), (steve.doe@gmail.com, Steve, Doe), (another.doe@gmail.com, Another, Doe), (coffee.doe@gmail.com, Coffee, Doe), (covfefe.doe@gmail.com, Covfefe, Doe))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:671
+    667|         // If an exception occurs when attempting to run a query, we'll format the error
+    668|         // message to include the bindings with SQL, which will make this exception a
+    669|         // lot more helpful to the developer instead of just the database's errors.
+    670|         catch (Exception $e) {
+  > 671|             throw new QueryException(
+    672|                 $query, $this->prepareBindings($bindings), $e
+    673|             );
+    674|         }
+    675|
+
+  • A column was not found: You might have forgotten to run your migrations. You can run your migrations using `php artisan migrate`. 
+    https://laravel.com/docs/master/migrations#running-migrations
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InsertBatchData.php:69
+      Illuminate\Database\Query\Builder::insert()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+string(26) "Handling insert batch data"
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'field list' (SQL: insert into `user_gacha_cards` (`email`, `first_name`, `last_name`) values (john.doe@gmail.com, Jonathan, Doe), (steve.doe@gmail.com, Steve, Doe), (another.doe@gmail.com, Another, Doe), (coffee.doe@gmail.com, Coffee, Doe), (covfefe.doe@gmail.com, Covfefe, Doe))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:671
+    667|         // If an exception occurs when attempting to run a query, we'll format the error
+    668|         // message to include the bindings with SQL, which will make this exception a
+    669|         // lot more helpful to the developer instead of just the database's errors.
+    670|         catch (Exception $e) {
+  > 671|             throw new QueryException(
+    672|                 $query, $this->prepareBindings($bindings), $e
+    673|             );
+    674|         }
+    675|
+
+  • A column was not found: You might have forgotten to run your migrations. You can run your migrations using `php artisan migrate`. 
+    https://laravel.com/docs/master/migrations#running-migrations
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InsertBatchData.php:69
+      Illuminate\Database\Query\Builder::insert()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'john.doe@gmail.com' for key 'jonathan_batch_test_email_unique' (SQL: insert into `jonathan_batch_test` (`email`, `first_name`, `last_name`) values (john.doe@gmail.com, Jonathan, Doe), (steve.doe@gmail.com, Steve, Doe), (another.doe@gmail.com, Another, Doe), (coffee.doe@gmail.com, Coffee, Doe), (covfefe.doe@gmail.com, Covfefe, Doe))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:671
+    667|         // If an exception occurs when attempting to run a query, we'll format the error
+    668|         // message to include the bindings with SQL, which will make this exception a
+    669|         // lot more helpful to the developer instead of just the database's errors.
+    670|         catch (Exception $e) {
+  > 671|             throw new QueryException(
+    672|                 $query, $this->prepareBindings($bindings), $e
+    673|             );
+    674|         }
+    675|
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InsertBatchData.php:68
+      Illuminate\Database\Query\Builder::insert()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'john.doe@gmail.com' for key 'jonathan_batch_test_email_unique' (SQL: insert into `jonathan_batch_test` (`email`, `first_name`, `last_name`) values (john.doe@gmail.com, Jonathan, Doe), (steve.doe@gmail.com, Steve, Doe), (another.doe@gmail.com, Another, Doe), (coffee.doe@gmail.com, Coffee, Doe), (covfefe.doe@gmail.com, Covfefe, Doe))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:671
+    667|         // If an exception occurs when attempting to run a query, we'll format the error
+    668|         // message to include the bindings with SQL, which will make this exception a
+    669|         // lot more helpful to the developer instead of just the database's errors.
+    670|         catch (Exception $e) {
+  > 671|             throw new QueryException(
+    672|                 $query, $this->prepareBindings($bindings), $e
+    673|             );
+    674|         }
+    675|
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InsertBatchData.php:68
+      Illuminate\Database\Query\Builder::insert()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'john.doe@gmail.com' for key 'jonathan_batch_test_email_unique' (SQL: insert into `jonathan_batch_test` (`email`, `first_name`, `last_name`) values (john.doe@gmail.com, Jonathan, Doe), (steve.doe@gmail.com, Steve, Doe), (another.doe@gmail.com, Another, Doe), (coffee.doe@gmail.com, Coffee, Doe), (covfefe.doe@gmail.com, Covfefe, Doe))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:671
+    667|         // If an exception occurs when attempting to run a query, we'll format the error
+    668|         // message to include the bindings with SQL, which will make this exception a
+    669|         // lot more helpful to the developer instead of just the database's errors.
+    670|         catch (Exception $e) {
+  > 671|             throw new QueryException(
+    672|                 $query, $this->prepareBindings($bindings), $e
+    673|             );
+    674|         }
+    675|
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InsertBatchData.php:75
+      Illuminate\Database\Query\Builder::insert()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+
+   ErrorException 
+
+  array_push() expects parameter 1 to be array, null given
+
+  at app/Console/Commands/InsertBatchData.php:49
+    45|             $firstName = substr(str_shuffle($permitted_chars), 0, 10);
+    46|             $lastName = substr(str_shuffle($permitted_chars), 0, 10);
+    47|             $email = (str_repeat('a', 64) . '@' . str_repeat('g', 255) . '.com');
+    48| 
+  > 49|             array_push($insertArray, ['first_name' => $firstName, 'last_name' => $lastName]);
+    50|         }
+    51| 
+    52|         return DB::table('jonathan_batch_test')->insert($batchUserData);
+    53|     }
+
+  1   app/Console/Commands/InsertBatchData.php:49
+      array_push(["lkt5hnsa9x", "3kmiqg2h76"])
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
