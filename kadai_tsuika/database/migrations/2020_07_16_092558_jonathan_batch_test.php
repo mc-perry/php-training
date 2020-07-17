@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMstCardDataTable extends Migration
+class JonathanBatchTest extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateMstCardDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('mst_card_data', function (Blueprint $table) {
+        Schema::create('jonathan_batch_test', function (Blueprint $table) {
             $table->bigIncrements('id')->autoIncrement()->comment('ID');
-            $table->string('card_name')->comment('カード名');
-            $table->integer('rarity')->comment('レア性');
+            $table->timestamp('created_at')->comment('Created At');
         });
     }
 
@@ -27,6 +26,6 @@ class CreateMstCardDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mst_card_data');
+        //
     }
 }

@@ -1,9 +1,7 @@
 <?php
 
-use App\User;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user/getall', 'UserController@getall');
-Route::post('/user/create', 'UserController@create');
-Route::post('/user/login', 'UserController@login');
-Route::post('/user/confirm', 'UserController@confirm')->middleware('checktoken');
-Route::post('/user/gameover', 'UserController@gameover')->middleware('checktoken');
-Route::post('/user/showrank', 'RankController@showrank');
-
-// Gacha routes
-Route::post('/gacha/creategacha', 'GachaController@creategacha');
-Route::post('/gacha/issueconsecutivegachas', 'GachaController@issueconsecutivegachas');
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});

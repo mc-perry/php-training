@@ -11,9 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(MstCardDataTableSeeder::class);
-        $this->call(MstGachaInfoSeeder::class);
-        $this->call(MstGachaToRarityMapSeeder::class);
-        $this->call(MstRarityToCardMapSeeder::class);
+        // $this->call(UserSeeder::class);
     }
 }
