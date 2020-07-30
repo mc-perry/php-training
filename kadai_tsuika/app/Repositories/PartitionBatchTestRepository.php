@@ -23,9 +23,9 @@ class PartitionBatchTestRepository
 
         $partitionQuery = "alter table jonathan_batch_test
         PARTITION BY RANGE(UNIX_TIMESTAMP (created_at) ) (
-            PARTITION part_less_than_today VALUES LESS THAN (" . $beginOfDay . "),
+            PARTITION part_nintety_minutes_ago VALUES LESS THAN (" . $beginOfDay . "),
             PARTITION part_within_twodays VALUES LESS THAN (" . $dayAfterTomorrow . "),
-            PARTITION part_after_twodays VALUES LESS THAN (MAXVALUE)
+            PARTITION recent_data VALUES LESS THAN (MAXVALUE)
         );";
 
         DB::unprepared(DB::raw($partitionQuery));

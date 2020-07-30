@@ -14,8 +14,7 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    protected $commands = [
-    ];
+    protected $commands = [];
 
     /**
      * Define the application's command schedule.
@@ -25,12 +24,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            DB::table('user_gacha_cards')->delete();
-        })->everyFiveMinutes()->appendOutputTo('/tmp/cron.log');
         // コマンドを使用してバッチデータを挿入する
         $schedule->command('batchdata:insert')
-            ->everyFiveMinutes()
+            ->everyTenMinutes()
+            ->withoutOverlapping()
+            ->appendOutputTo('/tmp/cron.log');
+
+        // 90分より古いパーティションを削除する
+        $schedule->command('batchdata:deletepartition')
+            ->hourlyAt(0)
+            ->hourlyAt(10)
+            ->hourlyAt(20)
             ->withoutOverlapping()
             ->appendOutputTo('/tmp/cron.log');
     }
